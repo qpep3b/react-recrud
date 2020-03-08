@@ -8,12 +8,15 @@ function ModalField({column, value}) {
             field = <textarea name={column.accessor} id={column.accessor} defaultValue={value}/>
             break
         case "select":
+            if (!column.editValues) {
+                alert("You have select field with no options!")
+            }
             field = (
                 <select name={column.accessor} id={column.accessor}  defaultValue={value} className="browser-default">
-                {column.editOptions.options.map((option, i) => {
+                {column.editValues.map((option, i) => {
                     return (
-                        <option key={i}>
-                            {option[0]}
+                        <option key={i} value={option.value}>
+                            {option.text}
                         </option>
                     )
                 })}

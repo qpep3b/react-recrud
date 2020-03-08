@@ -6,11 +6,24 @@ import ModalField from './ModalField'
 
 import style from './modal.module.css'
 
-const EditModal = function({columns=[], data={}}) {
+const EditModal = function({columns=[], data={}, url=''}) {
     const [modalOpen, setIsOpen] = useState(false)
 
     function closeModal() {
         setIsOpen(false)
+    }
+
+    function handleEdit(event) {
+        event.preventDefault()
+        let formData = {}
+        columns.map(column => {
+            if (!column.hidden) {
+                formData[column.accessor] = event.target[column.accessor].value
+            }
+        })
+        // here can write PATCH or PUT request
+        console.log("EDIT " + data.id)
+        console.log(formData)
     }
 
     return (
@@ -26,7 +39,7 @@ const EditModal = function({columns=[], data={}}) {
             isOpen={modalOpen}
             onRequestClose={closeModal}
         >
-            <form>
+            <form onSubmit={handleEdit}>
            {
                 columns.map((column, i) => {
                     if (!column.hidden) {

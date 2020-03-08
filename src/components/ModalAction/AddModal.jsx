@@ -8,11 +8,24 @@ import style from './modal.module.css'
 
 Modal.setAppElement('#root')
 
-function AddModal({columns=[]}) {
+function AddModal({columns=[], url=''}) {
     const [modalOpen, setIsOpen] = useState(false)
 
     function closeModal() {
         setIsOpen(false)
+    }
+
+    function handleAdd(event) {
+        event.preventDefault()
+        let formData = {}
+        columns.map(column => {
+            if (!column.hidden) {
+                formData[column.accessor] = event.target[column.accessor].value
+            }
+        })
+        // here can write POST request to url
+        console.log("ADD")
+        console.log(formData)
     }
 
     return (
@@ -28,6 +41,7 @@ function AddModal({columns=[]}) {
             isOpen={modalOpen}
             onRequestClose={closeModal}
         >   
+            <form onSubmit={handleAdd}>
             {
                 columns.map((column, i) => {
                     if (!column.hidden) {
@@ -44,6 +58,7 @@ function AddModal({columns=[]}) {
                 <button type="submit" className="btn">Submit</button>
                 <button onClick={closeModal} className="btn">close</button>
             </div>
+            </form>
         </Modal>
         </>
     )

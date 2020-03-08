@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import { useTable, useSortBy, usePagination } from 'react-table'
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { useTable, useSortBy, usePagination, useBlockLayout, useResizeColumns } from 'react-table'
+import { faTrashAlt, faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import AddModal from './ModalAction/AddModal'
 import EditModal from './ModalAction/EditModal'
 
 import style from './Table.module.css'
 
-function Table({ columns, data, add = true, edit = true, remove = true }) {
+function Table({ columns, data, add = true, edit = true, remove = true, url = ''}) {
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        rows,
         prepareRow,
         page,
         canPreviousPage,
@@ -29,23 +28,29 @@ function Table({ columns, data, add = true, edit = true, remove = true }) {
             columns,
             data,
         },
+        useBlockLayout,
+        useResizeColumns,
         useSortBy,
         usePagination,
     )
 
     const [selectedData, setSelected] = useState({})
 
+    function handleDelete() {
+        console.log(selectedData)
+    }
+
     function renderControls() {
         return (
             <div className="left">
                 { add ?
-                    <AddModal columns={columns}/> : null
+                    <AddModal columns={columns} url={url}/> : null
                 }
                 {edit ?
-                    <EditModal columns={columns} data={selectedData}/> : null
+                    <EditModal columns={columns} data={selectedData} url={url}/> : null
                 }
                 {remove ?
-                    <button className={Object.keys(selectedData).length ? "btn-flat" : "btn-flat disabled"}>
+                    <button className={Object.keys(selectedData).length ? "btn-flat" : "btn-flat disabled"} onClick={handleDelete}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button> : null
                 }
@@ -64,13 +69,16 @@ function Table({ columns, data, add = true, edit = true, remove = true }) {
                             {headerGroup.headers.map(column => (
                                 <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                                     {column.render('Header')}
-                                    <span>
-                                        {column.isSorted
+                                    {column.disableSortBy ? null :
+                                    <FontAwesomeIcon className={column.isSorted ? "right" : "right grey-text text-lighten-2"}
+                                        icon={column.isSorted
                                             ? column.isSortedDesc
-                                                ? ' 🔽'
-                                                : ' 🔼'
-                                            : ' '}
-                                    </span>
+                                                ? faSortDown
+                                                : faSortUp
+                                            : faSort
+                                        }
+                                    />
+                                    }
                                 </th>
                             ))}
                         </tr>
@@ -137,6 +145,7 @@ function Table({ columns, data, add = true, edit = true, remove = true }) {
                     />
                 </span>{' '}
                 <select
+                    className="browser-default"
                     value={pageSize}
                     onChange={e => {
                         setPageSize(Number(e.target.value))

@@ -7,11 +7,13 @@ function getColumns() {
     {
       Header: "ID",
       accessor: "id",
-      hidden: "true",
+      hidden: true,
+      width: 70,
     },
     {
       Header: "Domain",
       accessor: "url",
+      disableSortBy: true,
     },
     {
       Header: "Comment",
@@ -22,12 +24,16 @@ function getColumns() {
       Header: "type",
       accessor: "type",
       editType: "select",
-      editOptions: {
-        options: [
-          ['type1', 'type1'],
-          ['type2', 'type2'],
-        ]
-      }
+      editValues: [
+        {
+          "text": 'type1',
+          "value": 'type1',
+        },
+        {
+          "text": 'type2',
+          "value": 'type2',
+        },
+      ]
     }
   ];
 }
