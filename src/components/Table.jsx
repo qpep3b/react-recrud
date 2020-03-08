@@ -7,7 +7,7 @@ import EditModal from './ModalAction/EditModal'
 
 import style from './Table.module.css'
 
-function Table({ columns, data, add = true, edit = true, remove = true, url = ''}) {
+function Table({ columns, data, hiddenColumns=[], add = true, edit = true, remove = true, url = ''}) {
     const {
         getTableProps,
         getTableBodyProps,
@@ -27,6 +27,9 @@ function Table({ columns, data, add = true, edit = true, remove = true, url = ''
         {
             columns,
             data,
+            initialState: {
+                hiddenColumns: hiddenColumns
+            },
         },
         useBlockLayout,
         useResizeColumns,

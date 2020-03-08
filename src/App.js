@@ -42,24 +42,24 @@ const data = [
   {
     id: 1,
     url: "123.com",
-    comment: "fsd"
+    comment: "comment for 123"
   },
   {
     id: 2,
     url: "mail.ru",
-    comment: "lorem"
+    comment: "comment for mail"
   },
   {
     id: 3,
     url: "vk.com",
-    comment: "ipsum"
+    comment: "comment for vk"
   }
 ];
 
 function App() {
   return (
     <div className="App">
-      <Table columns={getColumns()} data={data} />{" "}
+      <Table columns={getColumns()} data={data}/>{" "}
     </div>
   );
 }
