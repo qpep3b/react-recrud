@@ -59,7 +59,7 @@ const data = [
 function App() {
   return (
     <div className="App">
-      <Table columns={getColumns()} data={data}/>{" "}
+      <Table columns={getColumns()} data={data} hiddenColumns={["comment"]}/>{" "}
     </div>
   );
 }
