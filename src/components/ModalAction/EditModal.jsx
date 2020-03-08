@@ -15,12 +15,13 @@ const EditModal = function({columns=[], data={}, url=''}) {
 
     function handleEdit(event) {
         event.preventDefault()
-        let formData = {}
-        columns.map(column => {
+        var formData = columns.reduce(function(map, column) {
             if (!column.hidden) {
-                formData[column.accessor] = event.target[column.accessor].value
+                map[column.accessor] = event.target[column.accessor].value
+                return map
             }
-        })
+            return {}   
+        }, {})
         // here can write PATCH or PUT request
         console.log("EDIT " + data.id)
         console.log(formData)

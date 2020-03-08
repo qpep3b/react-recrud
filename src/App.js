@@ -42,7 +42,8 @@ const data = [
   {
     id: 1,
     url: "123.com",
-    comment: "comment for 123"
+    comment: "comment for 123",
+    type: "type2",
   },
   {
     id: 2,

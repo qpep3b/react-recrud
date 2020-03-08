@@ -5,7 +5,7 @@
  Из корня запустить
  ```
  npm install
- npm run start
+ npm start
  ```
  Дальше открыть в браузере `http://localhost:3000/` и наслаждаться
 

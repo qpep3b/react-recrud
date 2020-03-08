@@ -17,12 +17,18 @@ function AddModal({columns=[], url=''}) {
 
     function handleAdd(event) {
         event.preventDefault()
-        let formData = {}
-        columns.map(column => {
+        var formData = columns.reduce(function(map, column) {
             if (!column.hidden) {
-                formData[column.accessor] = event.target[column.accessor].value
+                map[column.accessor] = event.target[column.accessor].value
+                return map
             }
-        })
+            return {}   
+        }, {})
+        // columns.forEach(column => {
+        //     if (!column.hidden) {
+        //         formData[column.accessor] = event.target[column.accessor].value
+        //     }
+        // })
         // here can write POST request to url
         console.log("ADD")
         console.log(formData)
