@@ -30,8 +30,8 @@ function ModalField({column, value}) {
 
     return (
         <div>
-            {field}
             <label htmlFor={column.accessor}>{column.Header}</label>
+            {field}
         </div>
     )
 }

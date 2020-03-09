@@ -6,3 +6,9 @@
 .selected {
     background-color: yellow;
 }
+
+.customSelect {
+    display: block;
+    width: auto;
+    background-color: #fff;
+}

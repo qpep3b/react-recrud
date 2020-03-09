@@ -53,9 +53,9 @@ const EditModal = function({columns=[], data={}, url=''}) {
                     }
                 })
             }
-            <div>
+            <div className={`right ${style.submitBlock}`}>
                 <button type="submit" className="btn">Submit</button>
-                <button onClick={closeModal} className="btn">close</button>
+                <button onClick={closeModal} className="btn red lighten-2">close</button>
             </div>
             </form>
         </Modal>
