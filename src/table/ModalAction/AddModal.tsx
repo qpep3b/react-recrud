@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
-import {useCrudApiClient} from '../../apiClientProvider'
+import { useCrudApiClient } from '../../apiClientProvider'
 
 import style from './modal.module.css'
 
@@ -75,7 +75,8 @@ function AddModal({ columns = [], url = '', callback = null }) {
                 'content-type': 'multipart/form-data',
             },
         }
-        apiClient.post(url, formData, config)
+        apiClient
+            .post(url, formData, config)
             .then(() => {
                 closeModal()
                 setOpenCounter(openCounter => openCounter + 1)

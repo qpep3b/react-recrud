@@ -6,7 +6,7 @@ import DeleteModal from './ModalAction/DeleteModal'
 // import FilterModal from './ModalAction/FilterModal'
 
 import { Column, PaginatedResponse } from './types'
-import {useCrudApiClient} from '../apiClientProvider'
+import { useCrudApiClient } from '../apiClientProvider'
 
 interface TableProps {
     columns: Column[]
@@ -74,9 +74,8 @@ const CrudTable: React.FC<TableProps> = ({
     const fetchData = React.useCallback(
         ({ pageSize, pageIndex, orderBy, order, searchQuery, filters }) => {
             setLoading(true)
-            apiClient.get<any, {data: PaginatedResponse<any[]>}>(
-                url, 
-                {
+            apiClient
+                .get<any, { data: PaginatedResponse<any[]> }>(url, {
                     params: {
                         page: pageIndex + 1,
                         page_size: pageSize,
@@ -85,12 +84,12 @@ const CrudTable: React.FC<TableProps> = ({
                         search_query: searchQuery ? searchQuery : null,
                         filters: Object.keys(filters).length > 0 ? JSON.stringify(filters) : null,
                     },
-                }
-            ).then(({data}) => {
-                setData(data.results)
-                setPageCount(data.params.pages)
-                setLoading(false)
-            })
+                })
+                .then(({ data }) => {
+                    setData(data.results)
+                    setPageCount(data.params.pages)
+                    setLoading(false)
+                })
         },
         [url],
     )

@@ -1,51 +1,48 @@
-import React, { useState } from "react";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons/faTrashAlt";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Modal from 'react-modal';
-import {useCrudApiClient} from '../../apiClientProvider'
+import React, { useState } from 'react'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Modal from 'react-modal'
+import { useCrudApiClient } from '../../apiClientProvider'
 
-import style from "./modal.module.css";
+import style from './modal.module.css'
 
-const DeleteModal = ({ pageData = [], url = "", pkField = "id", index, callback }) => {
+const DeleteModal = ({ pageData = [], url = '', pkField = 'id', index, callback }) => {
     const apiClient = useCrudApiClient()
-    const [modalOpen, setIsOpen] = useState<boolean>(false);
-    const [error, setErrorText] = useState<string>();
+    const [modalOpen, setIsOpen] = useState<boolean>(false)
+    const [error, setErrorText] = useState<string>()
 
     function closeModal() {
-        setIsOpen(false);
+        setIsOpen(false)
     }
 
     function handleDelete(event) {
-        event.preventDefault();
+        event.preventDefault()
 
-        const deleteUrl = index == null ? url : `${url}${pageData[index].original[pkField]}/`;
+        const deleteUrl = index == null ? url : `${url}${pageData[index].original[pkField]}/`
 
-        apiClient.delete(deleteUrl)
+        apiClient
+            .delete(deleteUrl)
             .then(() => {
-                closeModal();
+                closeModal()
             })
-            .catch((e) => setErrorText(e.response.data.detail));
+            .catch(e => setErrorText(e.response.data.detail))
 
-        callback();
+        callback()
     }
 
     return (
         <>
             <button
                 disabled={index == null}
-                onClick={(e) => {
-                    e.preventDefault();
-                    setIsOpen(true);
+                onClick={e => {
+                    e.preventDefault()
+                    setIsOpen(true)
                 }}
             >
                 <FontAwesomeIcon icon={faTrashAlt} />
             </button>
             {index == null ? null : (
-                <Modal
-                    isOpen={modalOpen}
-                    onRequestClose={closeModal}
-                    className={style.modal}
-                >
+                <Modal isOpen={modalOpen} onRequestClose={closeModal} className={style.modal}>
                     {error ? <div className={style.error}>{error}</div> : null}
                     <form id="formDelete" onSubmit={handleDelete}>
                         <div>Delete selected entry?</div>
@@ -61,7 +58,7 @@ const DeleteModal = ({ pageData = [], url = "", pkField = "id", index, callback 
                 </Modal>
             )}
         </>
-    );
-};
+    )
+}
 
-export default DeleteModal;
+export default DeleteModal

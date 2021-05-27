@@ -3,167 +3,172 @@ import Modal from 'react-modal'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
-import {useCrudApiClient} from '../../apiClientProvider'
+import { useCrudApiClient } from '../../apiClientProvider'
 
 import style from './modal.module.css'
 
-const EditModal = function ({ 
+const EditModal = function ({
     columns = [],
     pageData = [],
-    url = "",
-    pkField = "id",
+    url = '',
+    pkField = 'id',
     callback,
     index,
     setIndex,
- }) {
+}) {
     const apiClient = useCrudApiClient()
-    const [modalOpen, setIsOpen] = useState<boolean>(false);
-    const [error, setErrorText] = useState<string>("");
-    const [editableData, setEditableData] = useState<Object>(index == null ? {} : pageData[index].original);
+    const [modalOpen, setIsOpen] = useState<boolean>(false)
+    const [error, setErrorText] = useState<string>('')
+    const [editableData, setEditableData] = useState<Object>(
+        index == null ? {} : pageData[index].original,
+    )
 
     // Refs for simulating triggering jsx elements
-    const formElement = useRef(null);
-    const submitButton = useRef(null);
-    const saveAndContinueButton = useRef(null);
-    const cancelButton = useRef(null);
+    const formElement = useRef(null)
+    const submitButton = useRef(null)
+    const saveAndContinueButton = useRef(null)
+    const cancelButton = useRef(null)
 
     useEffect(() => {
         if (!(index == null)) {
-            setEditableData(pageData[index].original);
+            setEditableData(pageData[index].original)
         }
-    }, [index]);
+    }, [index])
 
     function closeModal() {
-        setIsOpen(false);
-        setErrorText("");
+        setIsOpen(false)
+        setErrorText('')
     }
 
     function buildErrorText(error) {
-        let errMsg = "";
+        let errMsg = ''
 
         for (const field in error.response.data) {
-            errMsg += `${field}: ${error.response.data[field]}\n`;
+            errMsg += `${field}: ${error.response.data[field]}\n`
         }
 
-        return errMsg;
+        return errMsg
     }
 
     const getFormData = () => {
-        const formData = new FormData();
-        const multipleValuesCounter = {};
-        columns.forEach((column) => {
+        const formData = new FormData()
+        const multipleValuesCounter = {}
+        columns.forEach(column => {
             if (!column.hidden && column.editable) {
                 if (column.editFormFields && column.editWidget) {
-                    column.editFormFields.forEach((accessor) => {
+                    column.editFormFields.forEach(accessor => {
                         if (formElement.current[accessor] instanceof NodeList) {
                             if (!Object.keys(multipleValuesCounter).includes(accessor)) {
-                                multipleValuesCounter[accessor] = 0;
+                                multipleValuesCounter[accessor] = 0
                             }
                             formData.append(
                                 accessor,
-                                formElement.current[accessor][multipleValuesCounter[accessor]].value
-                            );
-                            multipleValuesCounter[accessor] += 1;
+                                formElement.current[accessor][multipleValuesCounter[accessor]]
+                                    .value,
+                            )
+                            multipleValuesCounter[accessor] += 1
                         } else {
-                            formData.append(accessor, formElement.current[accessor].value);
+                            formData.append(accessor, formElement.current[accessor].value)
                         }
-                    });
+                    })
                 } else if (column.getFormData) {
-                    column.getFormData(formData, formElement.current);
+                    column.getFormData(formData, formElement.current)
                 } else {
                     formData.append(
                         column.accessor,
-                        column.editType == "checkbox"
+                        column.editType == 'checkbox'
                             ? formElement.current[column.accessor].checked
-                            : formElement.current[column.accessor].value
-                    );
-                    if (column.editType == "file") {
+                            : formElement.current[column.accessor].value,
+                    )
+                    if (column.editType == 'file') {
                         formData.append(
                             `${column.accessor}_file`,
-                            formElement.current[`${column.accessor}_file`].files[0]
-                        );
+                            formElement.current[`${column.accessor}_file`].files[0],
+                        )
                     }
                 }
             }
-        });
+        })
 
-        return formData;
-    };
+        return formData
+    }
 
     function handleEdit(event) {
-        event.preventDefault();
-        const formData = getFormData();
+        event.preventDefault()
+        const formData = getFormData()
 
-        const editUrl = `${url}${editableData[pkField]}/`;
+        const editUrl = `${url}${editableData[pkField]}/`
 
         const config = {
             headers: {
-                "content-type": "multipart/form-data",
+                'content-type': 'multipart/form-data',
             },
-        };
-        apiClient.patch(editUrl, formData, config)
+        }
+        apiClient
+            .patch(editUrl, formData, config)
             .then(() => {
-                closeModal();
+                closeModal()
             })
-            .catch((e) => setErrorText(buildErrorText(e)));
+            .catch(e => setErrorText(buildErrorText(e)))
 
-        callback();
+        callback()
     }
 
     function handleEditNext(event) {
-        event.preventDefault();
-        const formData = getFormData();
+        event.preventDefault()
+        const formData = getFormData()
 
-        const editUrl = `${url}${editableData[pkField]}/`;
+        const editUrl = `${url}${editableData[pkField]}/`
 
         const config = {
             headers: {
-                "content-type": "multipart/form-data",
+                'content-type': 'multipart/form-data',
             },
-        };
-        apiClient.patch(editUrl, formData, config)
+        }
+        apiClient
+            .patch(editUrl, formData, config)
             .then(() => {
-                setIndex(idx => idx + 1);
+                setIndex(idx => idx + 1)
             })
-            .catch((e) => setErrorText(buildErrorText(e)));
+            .catch(e => setErrorText(buildErrorText(e)))
 
-        callback();
+        callback()
     }
 
-    const handleCmdEnterPress = (event) => {
+    const handleCmdEnterPress = event => {
         if (modalOpen) {
-            if (event.key === "Enter" && event.ctrlKey) {
-                event.preventDefault();
-                saveAndContinueButton.current.click();
-            } else if (event.key === "Enter" && !event.shiftKey) {
-                event.preventDefault();
-                submitButton.current.click();
-            } else if (event.key === "Escape") {
-                event.preventDefault();
-                cancelButton.current.click();
+            if (event.key === 'Enter' && event.ctrlKey) {
+                event.preventDefault()
+                saveAndContinueButton.current.click()
+            } else if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault()
+                submitButton.current.click()
+            } else if (event.key === 'Escape') {
+                event.preventDefault()
+                cancelButton.current.click()
             }
         }
-    };
+    }
 
     useEffect(() => {
-        document.addEventListener("keydown", handleCmdEnterPress);
+        document.addEventListener('keydown', handleCmdEnterPress)
 
         return () => {
-            document.removeEventListener("keydown", handleCmdEnterPress);
-        };
-    });
+            document.removeEventListener('keydown', handleCmdEnterPress)
+        }
+    })
 
-    const handleNextRow = (event) => {
-        event.preventDefault();
+    const handleNextRow = event => {
+        event.preventDefault()
 
-        setIndex(idx => idx + 1);
-    };
+        setIndex(idx => idx + 1)
+    }
 
-    const handlePreviousRow = (event) => {
-        event.preventDefault();
+    const handlePreviousRow = event => {
+        event.preventDefault()
 
-        setIndex(idx => idx - 1);
-    };
+        setIndex(idx => idx - 1)
+    }
 
     return (
         <>
@@ -176,14 +181,18 @@ const EditModal = function ({
             >
                 <FontAwesomeIcon icon={faEdit} />
             </button>
-            { index == null ? null : (
+            {index == null ? null : (
                 <Modal className={style.modal} isOpen={modalOpen} onRequestClose={closeModal}>
                     <form onSubmit={handleEdit}>
                         {error ? <div className={style.error}>{error}</div> : null}
                         {columns.map((column, i) => {
                             if (!column.hidden) {
                                 return (
-                                    <ModalField key={i} column={column} value={editableData[column.accessor]} />
+                                    <ModalField
+                                        key={i}
+                                        column={column}
+                                        value={editableData[column.accessor]}
+                                    />
                                 )
                             } else {
                                 return (

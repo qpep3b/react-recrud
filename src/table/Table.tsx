@@ -2,40 +2,38 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useTable, useSortBy, usePagination } from 'react-table'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useHistory } from "react-router-dom";
-import {useParsedLocation} from '../hooks/urlHooks'
+import { useHistory } from 'react-router-dom'
+import { useParsedLocation } from '../hooks/urlHooks'
 
-import {Column} from './types'
+import { Column } from './types'
 
 import style from './Table.module.css'
 
-
 interface TableProps {
-    data: Record<string, any>[];
-    columns: Column[];
-    hiddenColumns?: Column[];
-    add: boolean;
-    edit: boolean;
-    remove: boolean;
-    globalSearch: boolean;
-    filter: boolean;
-    url: string;
+    data: Record<string, any>[]
+    columns: Column[]
+    hiddenColumns?: Column[]
+    add: boolean
+    edit: boolean
+    remove: boolean
+    globalSearch: boolean
+    filter: boolean
+    url: string
 
-    fetchData(paginationParams): void;
-    extendRowParams(row): Record<string, any>;
+    fetchData(paginationParams): void
+    extendRowParams(row): Record<string, any>
 
-    loading: boolean;
-    pageCount: number;
-    defaultSortField: string;
-    defaultSortOrder: string;
-    pkField: string;
+    loading: boolean
+    pageCount: number
+    defaultSortField: string
+    defaultSortOrder: string
+    pkField: string
 
-    drawAddModal({ columns, url, callback }): void;
-    drawEditModal({ columns, url, data, index, setIndex, callback, pkField }): void;
-    drawDeleteModal({ url, data, index, callback, pkField }): void;
+    drawAddModal({ columns, url, callback }): void
+    drawEditModal({ columns, url, data, index, setIndex, callback, pkField }): void
+    drawDeleteModal({ url, data, index, callback, pkField }): void
     // drawFilterModal({ columns, url, callback }): void;
 }
-
 
 const Table: React.FC<TableProps> = ({
     columns,
@@ -60,8 +58,8 @@ const Table: React.FC<TableProps> = ({
     fetchData,
     hiddenColumns = [],
 }) => {
-    const { path, urlParams } = useParsedLocation();
-    const history = useHistory();
+    const { path, urlParams } = useParsedLocation()
+    const history = useHistory()
 
     const {
         getTableProps,
@@ -80,91 +78,91 @@ const Table: React.FC<TableProps> = ({
                 sortBy: [
                     {
                         id: defaultSortField,
-                        desc: defaultSortOrder == "desc",
+                        desc: defaultSortOrder == 'desc',
                     },
                 ],
                 pageSize: urlParams.pageSize
                     ? parseInt(urlParams.pageSize)
-                    : localStorage.getItem("tablePageSize")
-                    ? localStorage.getItem("tablePageSize")
+                    : localStorage.getItem('tablePageSize')
+                    ? localStorage.getItem('tablePageSize')
                     : 20,
             },
             manualPagination: true,
             manualSortBy: true,
         },
         useSortBy,
-        usePagination
-    );
+        usePagination,
+    )
 
-    const [pageIndex, setPageIndex] = useState(urlParams.page ? parseInt(urlParams.page) - 1 : 0);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [filters, setFilters] = useState({});
-    const [selectedIndex, setSelectedIndex] = useState();
+    const [pageIndex, setPageIndex] = useState(urlParams.page ? parseInt(urlParams.page) - 1 : 0)
+    const [searchQuery, setSearchQuery] = useState('')
+    const [filters, setFilters] = useState({})
+    const [selectedIndex, setSelectedIndex] = useState()
 
     useEffect(() => {
-        let order = defaultSortOrder;
-        let orderBy = defaultSortField;
+        let order = defaultSortOrder
+        let orderBy = defaultSortField
         if (sortBy[0]) {
-            order = sortBy[0].desc ? "desc" : "asc";
-            orderBy = sortBy[0].id;
+            order = sortBy[0].desc ? 'desc' : 'asc'
+            orderBy = sortBy[0].id
         }
 
-        fetchData({ pageIndex, pageSize, orderBy, order, searchQuery, filters });
-        setSelectedIndex(null);
-    }, [fetchData, pageIndex, pageSize, sortBy, filters]);
+        fetchData({ pageIndex, pageSize, orderBy, order, searchQuery, filters })
+        setSelectedIndex(null)
+    }, [fetchData, pageIndex, pageSize, sortBy, filters])
 
     useEffect(() => {
         history.push({
             pathname: path,
             search: `?page=${pageIndex + 1}&pageSize=${pageSize}`,
-        });
-    }, [pageIndex, pageSize]);
+        })
+    }, [pageIndex, pageSize])
 
     const onUpdate = useCallback(() => {
-        let order = defaultSortOrder;
-        let orderBy = defaultSortField;
+        let order = defaultSortOrder
+        let orderBy = defaultSortField
         if (sortBy[0]) {
-            order = sortBy[0].desc ? "desc" : "asc";
-            orderBy = sortBy[0].id;
+            order = sortBy[0].desc ? 'desc' : 'asc'
+            orderBy = sortBy[0].id
         }
 
-        fetchData({ pageIndex, pageSize, orderBy, order, searchQuery, filters });
-        setSelectedIndex(null);
-    }, [pageIndex, pageSize, sortBy, searchQuery, filters]);
+        fetchData({ pageIndex, pageSize, orderBy, order, searchQuery, filters })
+        setSelectedIndex(null)
+    }, [pageIndex, pageSize, sortBy, searchQuery, filters])
 
-    const filtersCallback = (newFilters) => {
-        setPageIndex(0);
-        setFilters(newFilters);
-    };
+    const filtersCallback = newFilters => {
+        setPageIndex(0)
+        setFilters(newFilters)
+    }
 
-    const getTrProps = (row) => {
+    const getTrProps = row => {
         const rowParams = {
             ...row.getRowProps(),
             ...extendRowParams(row),
-        };
-
-        if (row.index === selectedIndex) {
-            rowParams.className = style.selected;
         }
 
-        return rowParams;
-    };
+        if (row.index === selectedIndex) {
+            rowParams.className = style.selected
+        }
+
+        return rowParams
+    }
 
     const getCellPropsByColumn = (column, ...args) => {
         if (column.getCellProps) {
-            return column.getCellProps(...args);
+            return column.getCellProps(...args)
         }
 
-        return {};
-    };
+        return {}
+    }
 
-    const handleEnterPress = (event) => {
-        if (event.key === "Enter") {
-            setPageIndex(0);
-            setSearchQuery(event.target.value);
-            onUpdate();
+    const handleEnterPress = event => {
+        if (event.key === 'Enter') {
+            setPageIndex(0)
+            setSearchQuery(event.target.value)
+            onUpdate()
         }
-    };
+    }
 
     const renderControls = () => (
         <div>
@@ -188,10 +186,9 @@ const Table: React.FC<TableProps> = ({
                       index: selectedIndex,
                       callback: onUpdate,
                   })
-                : null
-            }
+                : null}
         </div>
-    );
+    )
 
     return (
         <>
@@ -206,12 +203,12 @@ const Table: React.FC<TableProps> = ({
                                         {...column.getHeaderProps(column.getSortByToggleProps())}
                                         key={i}
                                     >
-                                        {column.render("Header")}
+                                        {column.render('Header')}
                                         {column.disableSortBy ? null : (
                                             <FontAwesomeIcon
                                                 style={{
-                                                    float: "right",
-                                                    alignSelf: "center",
+                                                    float: 'right',
+                                                    alignSelf: 'center',
                                                 }}
                                                 icon={
                                                     column.isSorted
@@ -229,42 +226,42 @@ const Table: React.FC<TableProps> = ({
                     </thead>
                     <tbody {...getTableBodyProps()} className="ant-table-tbody">
                         {page.map((row, i) => {
-                            prepareRow(row);
+                            prepareRow(row)
                             return (
                                 <tr
                                     {...getTrProps(row)}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setSelectedIndex(row.index);
+                                    onClick={e => {
+                                        e.preventDefault()
+                                        setSelectedIndex(row.index)
                                     }}
                                     key={i}
                                 >
                                     {row.cells.map((cell, i) => (
                                         <td
                                             {...cell.getCellProps(
-                                                getCellPropsByColumn(cell.column, row)
+                                                getCellPropsByColumn(cell.column, row),
                                             )}
                                             key={i}
                                         >
-                                            {cell.render("Cell")}
+                                            {cell.render('Cell')}
                                         </td>
                                     ))}
                                 </tr>
-                            );
+                            )
                         })}
                     </tbody>
                 </table>
             </div>
             <div className="pagination row">
                 <div className="col s3">
-                    Show{" "}
+                    Show{' '}
                     <select
                         className={style.customSelect}
                         value={pageSize}
-                        onChange={(event) => {
-                            setPageIndex(0);
-                            setPageSize(Number(event.target.value));
-                            localStorage.setItem("tablePageSize", event.target.value);
+                        onChange={event => {
+                            setPageIndex(0)
+                            setPageSize(Number(event.target.value))
+                            localStorage.setItem('tablePageSize', event.target.value)
                         }}
                     >
                         {[2, 10, 20, 30, 40, 50].map(pageSize => (
@@ -279,7 +276,10 @@ const Table: React.FC<TableProps> = ({
                     <button onClick={() => setPageIndex(0)} disabled={!(pageIndex > 0)}>
                         {'<<'}
                     </button>{' '}
-                    <button onClick={() => setPageIndex(idx => idx - 1)} disabled={!(pageIndex > 0)}>
+                    <button
+                        onClick={() => setPageIndex(idx => idx - 1)}
+                        disabled={!(pageIndex > 0)}
+                    >
                         {'<'}
                     </button>{' '}
                     <span>
@@ -288,10 +288,16 @@ const Table: React.FC<TableProps> = ({
                             {pageIndex + 1} of {pageCount}
                         </strong>{' '}
                     </span>
-                    <button onClick={() => setPageIndex(idx => idx + 1)} disabled={!(pageIndex < pageCount - 1)}>
+                    <button
+                        onClick={() => setPageIndex(idx => idx + 1)}
+                        disabled={!(pageIndex < pageCount - 1)}
+                    >
                         {'>'}
                     </button>{' '}
-                    <button onClick={() => setPageIndex(pageCount - 1)} disabled={!(pageIndex < pageCount - 1)}>
+                    <button
+                        onClick={() => setPageIndex(pageCount - 1)}
+                        disabled={!(pageIndex < pageCount - 1)}
+                    >
                         {'>>'}
                     </button>{' '}
                 </div>
