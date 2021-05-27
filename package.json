@@ -1,8 +1,8 @@
 {
-    "name": "react-table-crud",
+    "name": "crud-react-table",
     "version": "0.0.1",
     "description": "CRUD table for react based on react-table",
-    "main": "index.js",
+    "main": "index.ts",
     "dependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -40,17 +40,17 @@
         "start": "webpack serve",
         "build": "webpack",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "format": "prettier --write .",
+        "format": "prettier --write src/**/*",
         "tscheck": "tsc --noEmit"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/mikhinandrei/crud-react-table.git"
+        "url": "git+https://github.com/qpep3b/crud-react-table.git"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "qpep3b",
+    "license": "MIT",
     "bugs": {
-        "url": "https://github.com/mikhinandrei/crud-react-table/issues"
+        "url": "https://github.com/qpep3b/crud-react-table/issues"
     },
-    "homepage": "https://github.com/mikhinandrei/crud-react-table#readme"
+    "homepage": "https://github.com/qpep3b/crud-react-table#readme"
 }

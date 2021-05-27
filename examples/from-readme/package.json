@@ -1,0 +1,11 @@
+{
+  "name": "from-readme",
+  "version": "1.0.0",
+  "description": "basic example from readme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
