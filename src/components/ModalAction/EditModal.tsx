@@ -21,10 +21,10 @@ const EditModal = function ({
     const [editableData, setEditableData] = useState(index == null ? {} : pageData[index].original);
 
     // Refs for simulating triggering jsx elements
-    const formElement = useRef();
-    const submitButton = useRef();
-    const saveAndContinueButton = useRef();
-    const cancelButton = useRef();
+    const formElement = useRef(null);
+    const submitButton = useRef(null);
+    const saveAndContinueButton = useRef(null);
+    const cancelButton = useRef(null);
 
     useEffect(() => {
         if (!(index == null)) {

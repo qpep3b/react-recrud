@@ -19,3 +19,10 @@ export interface Column {
     sortType?: string
     dataType?: 'number' // more types cast rules not supported yet
 }
+
+export interface PaginatedResponse<T> {
+    results: T[]
+    params: {
+        pages: number
+    }
+}

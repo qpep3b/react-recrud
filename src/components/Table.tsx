@@ -33,7 +33,7 @@ interface TableProps {
     drawAddModal({ columns, url, callback }): void;
     drawEditModal({ columns, url, data, index, setIndex, callback, pkField }): void;
     drawDeleteModal({ url, data, index, callback, pkField }): void;
-    drawFilterModal({ columns, url, callback }): void;
+    // drawFilterModal({ columns, url, callback }): void;
 }
 
 
@@ -51,7 +51,7 @@ const Table: React.FC<TableProps> = ({
     drawAddModal,
     drawEditModal,
     drawDeleteModal,
-    drawFilterModal,
+    // drawFilterModal,
     extendRowParams,
     // special props
     data,
@@ -257,7 +257,7 @@ const Table: React.FC<TableProps> = ({
             </div>
             <div className="pagination row">
                 <div className="col s3">
-                    Показать{" "}
+                    Show{" "}
                     <select
                         className={style.customSelect}
                         value={pageSize}
@@ -273,7 +273,7 @@ const Table: React.FC<TableProps> = ({
                             </option>
                         ))}
                     </select>
-                    элементов
+                    elements
                 </div>
                 <div className="col s9">
                     <button onClick={() => setPageIndex(0)} disabled={!(pageIndex > 0)}>

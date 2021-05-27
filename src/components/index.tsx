@@ -5,7 +5,7 @@ import EditModal from './ModalAction/EditModal'
 import DeleteModal from './ModalAction/DeleteModal'
 // import FilterModal from './ModalAction/FilterModal'
 
-import { Column } from './types'
+import { Column, PaginatedResponse } from './types'
 import { getQuery } from '../api'
 
 interface TableProps {
@@ -73,7 +73,7 @@ const CrudTable: React.FC<TableProps> = ({
     const fetchData = React.useCallback(
         ({ pageSize, pageIndex, orderBy, order, searchQuery, filters }) => {
             setLoading(true)
-            getQuery(url, {
+            getQuery<PaginatedResponse<any[]>>(url, {
                 page: pageIndex + 1,
                 page_size: pageSize,
                 order_by: orderBy,
@@ -81,7 +81,6 @@ const CrudTable: React.FC<TableProps> = ({
                 search_query: searchQuery ? searchQuery : null,
                 filters: Object.keys(filters).length > 0 ? JSON.stringify(filters) : null,
             }).then(result => {
-                console.log(result)
                 setData(result.results)
                 setPageCount(result.params.pages)
                 setLoading(false)
