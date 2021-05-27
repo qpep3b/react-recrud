@@ -1,5 +1,4 @@
 import React from 'react'
-import './App.css'
 import CrudTable from './table'
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
 import { CrudApiClientProvider } from './apiClientProvider'
@@ -41,32 +40,11 @@ function getColumns() {
     ]
 }
 
-const data = [
-    {
-        id: 1,
-        url: '123.com',
-        comment: 'comment for 123',
-        type: 'type2',
-    },
-    {
-        id: 2,
-        url: 'mail.ru',
-        comment: 'comment for mail',
-    },
-    {
-        id: 3,
-        url: 'vk.com',
-        comment: 'comment for vk',
-    },
-]
-
 function App() {
     return (
         <CrudApiClientProvider client={api}>
             <Router history={browserHistory}>
-                <div className="App">
-                    <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
-                </div>
+                <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
             </Router>
         </CrudApiClientProvider>
     )
