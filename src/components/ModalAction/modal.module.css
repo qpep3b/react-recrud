@@ -21,3 +21,8 @@
 .submitBlock button {
     margin-left: 10px;
 }
+
+.error {
+    background-color: pink;
+    color: red;
+}
