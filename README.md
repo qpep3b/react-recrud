@@ -2,6 +2,12 @@
 
 Table providing CRUD operations with RESTful API based on `react-table`
 
+## Installation
+
+```sh
+npm install react-recrud
+```
+
 ## Usage
 Let's imagine that you have RESTful API server responding with following schema on `GET` some `/items` location
 ```ts
