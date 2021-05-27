@@ -1,31 +1,7 @@
-# react-recrud
-
-Table providing CRUD operations with RESTful API based on `react-table`
-
-## Installation
-
-```sh
-npm install react-recrud
-```
-
-## Usage
-Let's imagine that you have RESTful API server responding with following schema on `GET` some `/items` location
-```ts
-interface PaginatedResponse<T> {
-    results: T[]
-    params: {
-        pages: number
-    }
-}
-```
-Also your server provides `POST /items` for creating data, `PATCH /items/:id` for updating data and `DELETE /items/:id` for deleting items 
-
-Then you can use this package in your frontend
-```js
 import axios from 'axios'
 import React from 'react'
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
-import {CrudTable, CrudApiClientProvider} from 'react-recrud'
+import { CrudTable, CrudApiClientProvider } from 'react-recrud'
 
 const api = axios.create({
     baseURL: 'http://localhost:5000',
@@ -78,6 +54,3 @@ function App() {
 }
 
 export default App
-```
-
-Such widget will retrieve your data and automatically provide CRUD operations for `/items` viewset

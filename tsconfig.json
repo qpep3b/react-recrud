@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "es2020",
+        "jsx": "react",
+        "moduleResolution": "node",
+        "lib": ["dom", "es5", "es6"],
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["src/**/*"]
+}

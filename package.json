@@ -1,40 +1,52 @@
 {
-  "name": "crud-table",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.27",
-    "@fortawesome/free-solid-svg-icons": "^5.12.1",
-    "@fortawesome/react-fontawesome": "^0.1.9",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "materialize-css": "^1.0.0-rc.2",
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0",
-    "react-modal": "^3.11.2",
-    "react-scripts": "3.4.0",
-    "react-table": "^7.0.0-rc.16"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+    "name": "react-recrud",
+    "version": "0.0.3",
+    "description": "Table providing CRUD operations with RESTful API based on react-table",
+    "main": "lib/index.js",
+    "files": [
+        "lib",
+        "README.md"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.35",
+        "@fortawesome/free-solid-svg-icons": "^5.15.3",
+        "@fortawesome/react-fontawesome": "^0.1.14",
+        "axios": "^0.21.1",
+        "query-string": "^7.0.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-modal": "^3.13.1",
+        "react-router-dom": "^5.2.0",
+        "react-table": "^7.0.0-rc.16"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.14.3",
+        "@babel/core": "^7.14.3",
+        "@babel/preset-env": "^7.14.2",
+        "@babel/preset-react": "^7.13.13",
+        "@babel/preset-typescript": "^7.13.0",
+        "@types/react-router-dom": "^5.1.7",
+        "babel-loader": "^8.2.2",
+        "babel-plugin-css-modules-transform": "^1.6.2",
+        "prettier": "^2.3.0",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.3.2"
+    },
+    "scripts": {
+        "build": "rimraf lib/ && babel --extensions .ts,.tsx --ignore ./src/**/tests/**/* ./src --out-dir lib",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier --write src/**/*",
+        "tscheck": "tsc --noEmit",
+        "release": "npm run build && npm publish"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:qpep3b/react-recrud.git"
+    },
+    "author": "qpep3b",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/qpep3b/react-recrud/issues"
+    },
+    "homepage": "https://github.com/qpep3b/react-recrud"
 }
