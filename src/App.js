@@ -1,7 +1,9 @@
 import React from 'react'
 import './App.css'
-import CrudTable from './components'
+import CrudTable from './table'
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
+import { CrudApiClientProvider } from './apiClientProvider'
+import api from './api'
 
 function getColumns() {
     return [
@@ -60,11 +62,13 @@ const data = [
 
 function App() {
     return (
-        <Router history={browserHistory}>
-            <div className="App">
-                <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
-            </div>
-        </Router>
+        <CrudApiClientProvider client={api}>
+            <Router history={browserHistory}>
+                <div className="App">
+                    <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
+                </div>
+            </Router>
+        </CrudApiClientProvider>
     )
 }
 

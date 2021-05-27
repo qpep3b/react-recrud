@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons/faTrashAlt";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import api from "../../api";
 import Modal from 'react-modal';
+import {useCrudApiClient} from '../../apiClientProvider'
 
 import style from "./modal.module.css";
 
 const DeleteModal = ({ pageData = [], url = "", pkField = "id", index, callback }) => {
+    const apiClient = useCrudApiClient()
     const [modalOpen, setIsOpen] = useState<boolean>(false);
     const [error, setErrorText] = useState<string>();
 
@@ -19,7 +20,7 @@ const DeleteModal = ({ pageData = [], url = "", pkField = "id", index, callback 
 
         const deleteUrl = index == null ? url : `${url}${pageData[index].original[pkField]}/`;
 
-        api.delete(deleteUrl)
+        apiClient.delete(deleteUrl)
             .then(() => {
                 closeModal();
             })
@@ -43,10 +44,11 @@ const DeleteModal = ({ pageData = [], url = "", pkField = "id", index, callback 
                 <Modal
                     isOpen={modalOpen}
                     onRequestClose={closeModal}
+                    className={style.modal}
                 >
                     {error ? <div className={style.error}>{error}</div> : null}
                     <form id="formDelete" onSubmit={handleDelete}>
-                        <div>Удалить выбранную запись?</div>
+                        <div>Delete selected entry?</div>
                         <div className={`right ${style.submitBlock}`}>
                             <button type="submit" className="btn">
                                 Submit
@@ -61,4 +63,5 @@ const DeleteModal = ({ pageData = [], url = "", pkField = "id", index, callback 
         </>
     );
 };
+
 export default DeleteModal;

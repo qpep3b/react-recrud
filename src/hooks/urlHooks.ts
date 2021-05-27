@@ -17,7 +17,6 @@ function flattenIfRequired<T>(value: T[] | T): T {
 
 export const useParsedLocation = (): UrlParsedParams => {
     const url = useLocation()
-    console.log(url)
     const { page, pageSize } = queryString.parse(url.search)
 
     return {

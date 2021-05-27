@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
-import api from '../../api'
+import {useCrudApiClient} from '../../apiClientProvider'
 
 import style from './modal.module.css'
 
@@ -16,9 +16,10 @@ const EditModal = function ({
     index,
     setIndex,
  }) {
-    const [modalOpen, setIsOpen] = useState(false);
-    const [error, setErrorText] = useState("");
-    const [editableData, setEditableData] = useState(index == null ? {} : pageData[index].original);
+    const apiClient = useCrudApiClient()
+    const [modalOpen, setIsOpen] = useState<boolean>(false);
+    const [error, setErrorText] = useState<string>("");
+    const [editableData, setEditableData] = useState<Object>(index == null ? {} : pageData[index].original);
 
     // Refs for simulating triggering jsx elements
     const formElement = useRef(null);
@@ -100,7 +101,7 @@ const EditModal = function ({
                 "content-type": "multipart/form-data",
             },
         };
-        api.patch(editUrl, formData, config)
+        apiClient.patch(editUrl, formData, config)
             .then(() => {
                 closeModal();
             })
@@ -120,9 +121,9 @@ const EditModal = function ({
                 "content-type": "multipart/form-data",
             },
         };
-        api.patch(editUrl, formData, config)
+        apiClient.patch(editUrl, formData, config)
             .then(() => {
-                setIndex(index + 1);
+                setIndex(idx => idx + 1);
             })
             .catch((e) => setErrorText(buildErrorText(e)));
 
@@ -155,13 +156,13 @@ const EditModal = function ({
     const handleNextRow = (event) => {
         event.preventDefault();
 
-        setIndex(index + 1);
+        setIndex(idx => idx + 1);
     };
 
     const handlePreviousRow = (event) => {
         event.preventDefault();
 
-        setIndex(index - 1);
+        setIndex(idx => idx - 1);
     };
 
     return (

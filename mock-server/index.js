@@ -13,8 +13,6 @@ const data = Array.from(Array(500).keys()).map(i => {
     }
 })
 
-console.log(data)
-
 const paginationParams = req => {
     const page = Number(req.query.page) || 0
     const pageSize = Number(req.query.page_size)
@@ -30,7 +28,7 @@ const paginatedResponse = (page, pageSize, data) => {
                 page: 1,
                 pages: 1,
             },
-            result: data,
+            results: data,
         }
     }
     return {

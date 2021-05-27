@@ -3,13 +3,14 @@ import Modal from 'react-modal'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
-import api from '../../api'
+import {useCrudApiClient} from '../../apiClientProvider'
 
 import style from './modal.module.css'
 
 Modal.setAppElement('#root')
 
 function AddModal({ columns = [], url = '', callback = null }) {
+    const apiClient = useCrudApiClient()
     const [error, setErrorText] = useState('')
     const [modalOpen, setIsOpen] = useState(false)
     const [openCounter, setOpenCounter] = useState<number>(0)
@@ -74,7 +75,7 @@ function AddModal({ columns = [], url = '', callback = null }) {
                 'content-type': 'multipart/form-data',
             },
         }
-        api.post(url, formData, config)
+        apiClient.post(url, formData, config)
             .then(() => {
                 closeModal()
                 setOpenCounter(openCounter => openCounter + 1)

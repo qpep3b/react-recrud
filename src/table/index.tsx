@@ -6,7 +6,7 @@ import DeleteModal from './ModalAction/DeleteModal'
 // import FilterModal from './ModalAction/FilterModal'
 
 import { Column, PaginatedResponse } from './types'
-import { getQuery } from '../api'
+import {useCrudApiClient} from '../apiClientProvider'
 
 interface TableProps {
     columns: Column[]
@@ -66,6 +66,7 @@ const CrudTable: React.FC<TableProps> = ({
     //     <FilterModal columns={columns} url={url} callback={callback} />
     // ),
 }) => {
+    const apiClient = useCrudApiClient()
     const [data, setData] = React.useState([])
     const [loading, setLoading] = React.useState(false)
     const [pageCount, setPageCount] = React.useState(0)
@@ -73,16 +74,21 @@ const CrudTable: React.FC<TableProps> = ({
     const fetchData = React.useCallback(
         ({ pageSize, pageIndex, orderBy, order, searchQuery, filters }) => {
             setLoading(true)
-            getQuery<PaginatedResponse<any[]>>(url, {
-                page: pageIndex + 1,
-                page_size: pageSize,
-                order_by: orderBy,
-                order,
-                search_query: searchQuery ? searchQuery : null,
-                filters: Object.keys(filters).length > 0 ? JSON.stringify(filters) : null,
-            }).then(result => {
-                setData(result.results)
-                setPageCount(result.params.pages)
+            apiClient.get<any, {data: PaginatedResponse<any[]>}>(
+                url, 
+                {
+                    params: {
+                        page: pageIndex + 1,
+                        page_size: pageSize,
+                        order_by: orderBy,
+                        order,
+                        search_query: searchQuery ? searchQuery : null,
+                        filters: Object.keys(filters).length > 0 ? JSON.stringify(filters) : null,
+                    },
+                }
+            ).then(({data}) => {
+                setData(data.results)
+                setPageCount(data.params.pages)
                 setLoading(false)
             })
         },
