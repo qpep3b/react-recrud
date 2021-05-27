@@ -1,8 +1,11 @@
+import axios from 'axios'
 import React from 'react'
-import CrudTable from './table'
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
-import { CrudApiClientProvider } from './apiClientProvider'
-import api from './api'
+import { CrudTable, CrudApiClientProvider } from 'crud-react-table'
+
+const api = axios.create({
+    baseURL: 'http://localhost:5000',
+})
 
 function getColumns() {
     return [
