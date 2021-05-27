@@ -1,9 +1,9 @@
-# crud-react-table
+# react-recrud
 
-Table widget for crud operations based on `react-table` package
+Table providing CRUD operations with RESTful API based on `react-table`
 
 ## Usage
-Let's imagine that you have Rest API server responding with following schema on `GET` some `/items` location
+Let's imagine that you have RESTful API server responding with following schema on `GET` some `/items` location
 ```ts
 interface PaginatedResponse<T> {
     results: T[]
@@ -19,7 +19,7 @@ Then you can use this package in your frontend
 import axios from 'axios'
 import React from 'react'
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
-import {CrudTable, CrudApiClientProvider} from 'crud-react-table'
+import {CrudTable, CrudApiClientProvider} from 'react-recrud'
 
 const api = axios.create({
     baseURL: 'http://localhost:5000',

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
-import { CrudTable, CrudApiClientProvider } from 'crud-react-table'
+import { CrudTable, CrudApiClientProvider } from 'react-recrud'
 
 const api = axios.create({
     baseURL: 'http://localhost:5000',

@@ -1,7 +1,7 @@
 {
-    "name": "crud-react-table",
-    "version": "0.0.4",
-    "description": "CRUD table for react based on react-table",
+    "name": "react-recrud",
+    "version": "0.0.1",
+    "description": "Table providing CRUD operations with RESTful API based on react-table",
     "main": "lib/index.js",
     "files": [
         "lib",
@@ -41,12 +41,12 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/qpep3b/crud-react-table.git"
+        "url": "git@github.com:qpep3b/react-recrud.git"
     },
     "author": "qpep3b",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/qpep3b/crud-react-table/issues"
+        "url": "https://github.com/qpep3b/react-recrud/issues"
     },
-    "homepage": "https://github.com/qpep3b/crud-react-table#readme"
+    "homepage": "https://github.com/qpep3b/react-recrud"
 }

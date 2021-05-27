@@ -7,8 +7,6 @@ import { useParsedLocation } from '../hooks/urlHooks'
 
 import { Column } from './types'
 
-import style from './Table.module.css'
-
 interface TableProps {
     data: Record<string, any>[]
     columns: Column[]
@@ -142,7 +140,7 @@ const Table: React.FC<TableProps> = ({
         }
 
         if (row.index === selectedIndex) {
-            rowParams.className = style.selected
+            rowParams.style={backgroundColor: 'yellow'}
         }
 
         return rowParams
@@ -256,7 +254,12 @@ const Table: React.FC<TableProps> = ({
                 <div className="col s3">
                     Show{' '}
                     <select
-                        className={style.customSelect}
+                        style={{
+                            display: 'inline-block',
+                            width: 'auto',
+                            backgroundColor: '#fff',
+                            margin: '0 5px',
+                        }}
                         value={pageSize}
                         onChange={event => {
                             setPageIndex(0)

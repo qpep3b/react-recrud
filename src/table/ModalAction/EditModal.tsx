@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
 import { useCrudApiClient } from '../../apiClientProvider'
 
-import style from './modal.module.css'
+import style from './styles'
+
 
 const EditModal = function ({
     columns = [],
@@ -182,9 +183,9 @@ const EditModal = function ({
                 <FontAwesomeIcon icon={faEdit} />
             </button>
             {index == null ? null : (
-                <Modal className={style.modal} isOpen={modalOpen} onRequestClose={closeModal}>
+                <Modal style={style.modal} isOpen={modalOpen} onRequestClose={closeModal}>
                     <form onSubmit={handleEdit}>
-                        {error ? <div className={style.error}>{error}</div> : null}
+                        {error ? <div style={style.error}>{error}</div> : null}
                         {columns.map((column, i) => {
                             if (!column.hidden) {
                                 return (
@@ -205,11 +206,11 @@ const EditModal = function ({
                                 )
                             }
                         })}
-                        <div className={`right ${style.submitBlock}`}>
-                            <button type="submit" className="btn">
+                        <div style={style.submitBlock}>
+                            <button type="submit" style={style.submitBlockButton}>
                                 Submit
                             </button>
-                            <button onClick={closeModal} className="btn red lighten-2">
+                            <button onClick={closeModal} style={style.submitBlockButton}>
                                 close
                             </button>
                         </div>

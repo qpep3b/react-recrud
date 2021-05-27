@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "crud-react-table": "0.0.4"
+    "react-recrud": "0.0.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.2",
