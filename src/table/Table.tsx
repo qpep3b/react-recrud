@@ -135,6 +135,18 @@ const Table: React.FC<TableProps> = ({
         setFilters(newFilters)
     }
 
+    const tableProps = () => {
+        const defaultTableProps = {
+            style: {
+                borderCollapse: 'collapse',
+            },
+        }
+        return {
+            ...defaultTableProps,
+            ...getTableProps(),
+        }
+    }
+
     const getTrProps = row => {
         const rowParams = {
             ...row.getRowProps(),
@@ -148,12 +160,37 @@ const Table: React.FC<TableProps> = ({
         return rowParams
     }
 
-    const getCellPropsByColumn = (column: RTColumn, ...args) => {
-        if (column.getCellProps) {
-            return column.getCellProps(...args)
+    const getHeaderCellPropsByColumn = (column: RTColumn, ...args) => {
+        const defaultHeaderCellProps = {
+            style: {
+                border: '1px solid gray',
+                padding: '10px',
+                backgroundColor: '#eee',
+                cursor: 'pointer',
+            },
         }
 
-        return {}
+        return {
+            ...column.getHeaderProps(column.getSortByToggleProps()),
+            ...defaultHeaderCellProps,
+        }
+    }
+
+    const getCellPropsByColumn = (column: RTColumn, ...args) => {
+        const defaultCellProps = {
+            style: {
+                border: '1px solid gray',
+                padding: '10px',
+            },
+        }
+        if (column.getCellProps) {
+            return {
+                ...defaultCellProps,
+                ...column.getCellProps(...args),
+            }
+        }
+
+        return defaultCellProps
     }
 
     const renderControls = () => (
@@ -186,7 +223,7 @@ const Table: React.FC<TableProps> = ({
     )
 
     const renderHeaderCell = (column: RTColumn, i: number) => (
-        <th {...column.getHeaderProps(column.getSortByToggleProps())} key={i}>
+        <th {...getHeaderCellPropsByColumn(column)} key={i}>
             {column.render('Header')}
             {column.disableSortBy ? null : (
                 <FontAwesomeIcon
@@ -210,8 +247,8 @@ const Table: React.FC<TableProps> = ({
         <>
             {renderControls()}
             <div>
-                <table {...getTableProps()} className="tbl-content">
-                    <thead className="ant-table-thead">
+                <table {...tableProps()} className="tbl-content">
+                    <thead>
                         {headerGroups.map((headerGroup, i) => (
                             <tr {...headerGroup.getHeaderGroupProps()} key={i}>
                                 {headerGroup.headers.map((column, i) =>
@@ -220,7 +257,7 @@ const Table: React.FC<TableProps> = ({
                             </tr>
                         ))}
                     </thead>
-                    <tbody {...getTableBodyProps()} className="ant-table-tbody">
+                    <tbody {...getTableBodyProps()}>
                         {page.map((row, i) => {
                             prepareRow(row)
                             return (
