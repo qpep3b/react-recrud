@@ -2,6 +2,8 @@
 
 Table providing CRUD operations with RESTful API based on `react-table`
 
+[![npm](https://img.shields.io/npm/dt/react-recrud)](https://www.npmjs.com/package/react-recrud)
+
 ## Installation
 
 ```sh
