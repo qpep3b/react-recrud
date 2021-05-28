@@ -37,7 +37,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier --write src/**/*",
         "tscheck": "tsc --noEmit",
-        "release": "npm run build && npm publish"
+        "release": "npm run build && npm publish",
+        "debug": "npm run build && npm link"
     },
     "repository": {
         "type": "git",

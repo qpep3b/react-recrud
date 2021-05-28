@@ -136,13 +136,14 @@ const EditModal: React.FC<EditModalProps> = ({
             </button>
             {index == null ? null : (
                 <Modal style={style.modal} isOpen={modalOpen} onRequestClose={closeModal}>
-                    <form onSubmit={handleEdit}>
+                    <form onSubmit={handleEdit} ref={formElement}>
                         {error ? <div style={style.error}>{error}</div> : null}
                         {columns.map((column, i) => {
+                            const fieldKey = `edit:${editableData[pkField]}:${i}`
                             if (!column.hidden) {
                                 return (
                                     <ModalField
-                                        key={i}
+                                        key={fieldKey}
                                         column={column}
                                         value={editableData[column.accessor]}
                                     />
@@ -150,7 +151,7 @@ const EditModal: React.FC<EditModalProps> = ({
                             } else {
                                 return (
                                     <input
-                                        key={i}
+                                        key={fieldKey}
                                         type="hidden"
                                         name={column.accessor}
                                         id={column.accessor}
