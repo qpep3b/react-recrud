@@ -3,7 +3,7 @@
 Table providing CRUD operations with RESTful API based on `react-table`
 
 [![npm](https://img.shields.io/npm/dt/react-recrud)](https://www.npmjs.com/package/react-recrud)
-[![bundlephobia](https://badgen.net/bundlephobia/minzip/react-recrud@latest)](https://bundlephobia.com/result?p=react-recrud@0.0.3)
+[![bundlephobia](https://badgen.net/bundlephobia/minzip/react-recrud@0.0.4)](https://bundlephobia.com/result?p=react-recrud@0.0.4)
 
 ## Installation
 
