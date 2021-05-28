@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useTable, useSortBy, usePagination } from 'react-table'
+import { useTable, useSortBy, usePagination, Column as RTColumn } from 'react-table'
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useHistory } from 'react-router-dom'
@@ -26,9 +26,10 @@ interface TableProps {
     defaultSortField: string
     defaultSortOrder: string
     pkField: string
+    sendJsonData: boolean
 
-    drawAddModal({ columns, url, callback }): void
-    drawEditModal({ columns, url, data, index, setIndex, callback, pkField }): void
+    drawAddModal({ columns, url, callback, sendJson }): void
+    drawEditModal({ columns, url, data, index, setIndex, callback, pkField, sendJson }): void
     drawDeleteModal({ url, data, index, callback, pkField }): void
     // drawFilterModal({ columns, url, callback }): void;
 }
@@ -44,6 +45,7 @@ const Table: React.FC<TableProps> = ({
     defaultSortField,
     defaultSortOrder,
     pkField,
+    sendJsonData,
     drawAddModal,
     drawEditModal,
     drawDeleteModal,
@@ -140,13 +142,13 @@ const Table: React.FC<TableProps> = ({
         }
 
         if (row.index === selectedIndex) {
-            rowParams.style={backgroundColor: 'yellow'}
+            rowParams.style = { backgroundColor: 'yellow' }
         }
 
         return rowParams
     }
 
-    const getCellPropsByColumn = (column, ...args) => {
+    const getCellPropsByColumn = (column: RTColumn, ...args) => {
         if (column.getCellProps) {
             return column.getCellProps(...args)
         }
@@ -154,17 +156,11 @@ const Table: React.FC<TableProps> = ({
         return {}
     }
 
-    const handleEnterPress = event => {
-        if (event.key === 'Enter') {
-            setPageIndex(0)
-            setSearchQuery(event.target.value)
-            onUpdate()
-        }
-    }
-
     const renderControls = () => (
         <div>
-            {add ? drawAddModal({ columns, url, callback: onUpdate }) : null}
+            {add
+                ? drawAddModal({ columns, url, callback: onUpdate, sendJson: sendJsonData })
+                : null}
             {edit
                 ? drawEditModal({
                       columns,
@@ -174,6 +170,7 @@ const Table: React.FC<TableProps> = ({
                       index: selectedIndex,
                       setIndex: setSelectedIndex,
                       callback: onUpdate,
+                      sendJson: sendJsonData,
                   })
                 : null}
             {remove
@@ -188,6 +185,27 @@ const Table: React.FC<TableProps> = ({
         </div>
     )
 
+    const renderHeaderCell = (column: RTColumn, i: number) => (
+        <th {...column.getHeaderProps(column.getSortByToggleProps())} key={i}>
+            {column.render('Header')}
+            {column.disableSortBy ? null : (
+                <FontAwesomeIcon
+                    style={{
+                        float: 'right',
+                        alignSelf: 'center',
+                    }}
+                    icon={column.isSorted ? (column.isSortedDesc ? faSortDown : faSortUp) : faSort}
+                />
+            )}
+        </th>
+    )
+
+    const renderTableCell = (row, cell, i: number) => (
+        <td {...cell.getCellProps(getCellPropsByColumn(cell.column, row))} key={i}>
+            {cell.render('Cell')}
+        </td>
+    )
+
     return (
         <>
             {renderControls()}
@@ -196,29 +214,9 @@ const Table: React.FC<TableProps> = ({
                     <thead className="ant-table-thead">
                         {headerGroups.map((headerGroup, i) => (
                             <tr {...headerGroup.getHeaderGroupProps()} key={i}>
-                                {headerGroup.headers.map((column, i) => (
-                                    <th
-                                        {...column.getHeaderProps(column.getSortByToggleProps())}
-                                        key={i}
-                                    >
-                                        {column.render('Header')}
-                                        {column.disableSortBy ? null : (
-                                            <FontAwesomeIcon
-                                                style={{
-                                                    float: 'right',
-                                                    alignSelf: 'center',
-                                                }}
-                                                icon={
-                                                    column.isSorted
-                                                        ? column.isSortedDesc
-                                                            ? faSortDown
-                                                            : faSortUp
-                                                        : faSort
-                                                }
-                                            />
-                                        )}
-                                    </th>
-                                ))}
+                                {headerGroup.headers.map((column, i) =>
+                                    renderHeaderCell(column, i),
+                                )}
                             </tr>
                         ))}
                     </thead>
@@ -234,16 +232,7 @@ const Table: React.FC<TableProps> = ({
                                     }}
                                     key={i}
                                 >
-                                    {row.cells.map((cell, i) => (
-                                        <td
-                                            {...cell.getCellProps(
-                                                getCellPropsByColumn(cell.column, row),
-                                            )}
-                                            key={i}
-                                        >
-                                            {cell.render('Cell')}
-                                        </td>
-                                    ))}
+                                    {row.cells.map((cell, i) => renderTableCell(row, cell, i))}
                                 </tr>
                             )
                         })}

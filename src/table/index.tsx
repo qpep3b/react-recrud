@@ -19,6 +19,7 @@ interface TableProps {
     defaultSortField?: string
     defaultSortOrder?: string
     pkField?: string
+    sendJsonData?: boolean
     // For customization table
     extendRowParams?(row): Record<string, any>
     drawAddModal?(): JSX.Element
@@ -38,11 +39,12 @@ const CrudTable: React.FC<TableProps> = ({
     defaultSortField = 'id',
     defaultSortOrder = 'desc',
     pkField = 'id',
+    sendJsonData = false,
     extendRowParams = () => null,
-    drawAddModal = ({ columns, url, callback }) => (
-        <AddModal columns={columns} url={url} callback={callback} />
+    drawAddModal = ({ columns, url, callback, sendJson }) => (
+        <AddModal columns={columns} url={url} callback={callback} sendJson={sendJson} />
     ),
-    drawEditModal = ({ columns, url, data, index, setIndex, callback, pkField }) => (
+    drawEditModal = ({ columns, url, data, index, setIndex, callback, pkField, sendJson }) => (
         <EditModal
             columns={columns}
             url={url}
@@ -51,6 +53,7 @@ const CrudTable: React.FC<TableProps> = ({
             index={index}
             setIndex={setIndex}
             pkField={pkField}
+            sendJson={sendJson}
         />
     ),
     drawDeleteModal = ({ url, data, index, callback, pkField }) => (
@@ -116,6 +119,7 @@ const CrudTable: React.FC<TableProps> = ({
                 pageCount={pageCount}
                 fetchData={fetchData}
                 pkField={pkField}
+                sendJsonData={sendJsonData}
             />
         </div>
     )

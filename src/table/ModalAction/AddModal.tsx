@@ -6,13 +6,27 @@ import ModalField from './ModalField'
 import { useCrudApiClient } from '../../apiClientProvider'
 
 import style from './styles'
+import { Column } from '../types'
+import { getContentType, getFormData, getJsonData } from './utils/contentTypes'
 
 Modal.setAppElement('#root')
 
-function AddModal({ columns = [], url = '', callback = null }) {
+interface AddModalProps {
+    columns: Column[]
+    url: string
+    callback?(): void
+    sendJson?: boolean
+}
+
+const AddModal: React.FC<AddModalProps> = ({
+    columns = [],
+    url = '',
+    callback = null,
+    sendJson = false,
+}) => {
     const apiClient = useCrudApiClient()
-    const [error, setErrorText] = useState('')
-    const [modalOpen, setIsOpen] = useState(false)
+    const [error, setErrorText] = useState<string>('')
+    const [modalOpen, setIsOpen] = useState<boolean>(false)
     const [openCounter, setOpenCounter] = useState<number>(0)
 
     function buildErrorText(error) {
@@ -30,53 +44,18 @@ function AddModal({ columns = [], url = '', callback = null }) {
         setErrorText('')
     }
 
-    function handleAdd(event) {
+    const handleAdd = event => {
         event.preventDefault()
-        const formData = new FormData()
-        const multipleValuesCounter = {}
-        columns.forEach(column => {
-            if (!column.hidden) {
-                if (column.editFormFields && column.editWidget) {
-                    column.editFormFields.forEach(accessor => {
-                        if (event.target[accessor] instanceof NodeList) {
-                            if (!Object.keys(multipleValuesCounter).includes(accessor)) {
-                                multipleValuesCounter[accessor] = 0
-                            }
-                            formData.append(
-                                accessor,
-                                event.target[accessor][multipleValuesCounter[accessor]].value,
-                            )
-                            multipleValuesCounter[accessor] += 1
-                        } else {
-                            formData.append(accessor, event.target[accessor].value)
-                        }
-                    })
-                } else if (column.getFormData) {
-                    column.getFormData(formData, event.target)
-                } else {
-                    formData.append(
-                        column.accessor,
-                        column.editType == 'checkbox'
-                            ? event.target[column.accessor].checked
-                            : event.target[column.accessor].value,
-                    )
-                    if (column.editType == 'file') {
-                        formData.append(
-                            `${column.accessor}_file`,
-                            event.target[`${column.accessor}_file`].files[0],
-                        )
-                    }
-                }
-            }
-        })
 
-        const config = {
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
+        const requestData = sendJson
+            ? getJsonData(event.target, columns)
+            : getFormData(event.target, columns)
+
+        const requestConfig = {
+            headers: { 'content-type': getContentType(sendJson) },
         }
         apiClient
-            .post(url, formData, config)
+            .post(url, requestData, requestConfig)
             .then(() => {
                 closeModal()
                 setOpenCounter(openCounter => openCounter + 1)

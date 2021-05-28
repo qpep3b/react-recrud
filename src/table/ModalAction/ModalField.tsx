@@ -1,6 +1,12 @@
 import React from 'react'
+import { Column } from '../types'
 
-function ModalField({ column, value = null }) {
+interface ModalFieldProps {
+    column: Column
+    value?: any
+}
+
+const ModalField: React.FC<ModalFieldProps> = ({ column, value = null }) => {
     var field
 
     switch (column.editType) {

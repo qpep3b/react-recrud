@@ -1,22 +1,36 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { Row } from 'react-table'
 import Modal from 'react-modal'
-import { faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faCaretLeft, faCaretRight, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
 import { useCrudApiClient } from '../../apiClientProvider'
 
 import style from './styles'
+import { Column } from '../types'
+import { getContentType, getFormData, getJsonData } from './utils/contentTypes'
 
+interface EditModalProps {
+    columns: Column[]
+    pageData: Row[]
+    url: string
+    pkField?: string
+    callback?(): void
+    index?: number
+    setIndex(fn: (newIndex: number) => number): void
+    sendJson?: boolean
+}
 
-const EditModal = function ({
+const EditModal: React.FC<EditModalProps> = ({
     columns = [],
     pageData = [],
     url = '',
     pkField = 'id',
+    sendJson = false,
     callback,
     index,
     setIndex,
-}) {
+}) => {
     const apiClient = useCrudApiClient()
     const [modalOpen, setIsOpen] = useState<boolean>(false)
     const [error, setErrorText] = useState<string>('')
@@ -25,10 +39,10 @@ const EditModal = function ({
     )
 
     // Refs for simulating triggering jsx elements
-    const formElement = useRef(null)
-    const submitButton = useRef(null)
-    const saveAndContinueButton = useRef(null)
-    const cancelButton = useRef(null)
+    const formElement = useRef<HTMLFormElement>(null)
+    const submitButton = useRef<HTMLButtonElement>(null)
+    const saveAndContinueButton = useRef<HTMLButtonElement>(null)
+    const cancelButton = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
         if (!(index == null)) {
@@ -51,62 +65,21 @@ const EditModal = function ({
         return errMsg
     }
 
-    const getFormData = () => {
-        const formData = new FormData()
-        const multipleValuesCounter = {}
-        columns.forEach(column => {
-            if (!column.hidden && column.editable) {
-                if (column.editFormFields && column.editWidget) {
-                    column.editFormFields.forEach(accessor => {
-                        if (formElement.current[accessor] instanceof NodeList) {
-                            if (!Object.keys(multipleValuesCounter).includes(accessor)) {
-                                multipleValuesCounter[accessor] = 0
-                            }
-                            formData.append(
-                                accessor,
-                                formElement.current[accessor][multipleValuesCounter[accessor]]
-                                    .value,
-                            )
-                            multipleValuesCounter[accessor] += 1
-                        } else {
-                            formData.append(accessor, formElement.current[accessor].value)
-                        }
-                    })
-                } else if (column.getFormData) {
-                    column.getFormData(formData, formElement.current)
-                } else {
-                    formData.append(
-                        column.accessor,
-                        column.editType == 'checkbox'
-                            ? formElement.current[column.accessor].checked
-                            : formElement.current[column.accessor].value,
-                    )
-                    if (column.editType == 'file') {
-                        formData.append(
-                            `${column.accessor}_file`,
-                            formElement.current[`${column.accessor}_file`].files[0],
-                        )
-                    }
-                }
-            }
-        })
-
-        return formData
-    }
-
     function handleEdit(event) {
         event.preventDefault()
-        const formData = getFormData()
 
         const editUrl = `${url}${editableData[pkField]}/`
+        const requestData = sendJson
+            ? getJsonData(formElement.current, columns)
+            : getFormData(formElement.current, columns)
 
-        const config = {
+        const requestConfig = {
             headers: {
-                'content-type': 'multipart/form-data',
+                'content-type': getContentType(sendJson),
             },
         }
         apiClient
-            .patch(editUrl, formData, config)
+            .patch(editUrl, requestData, requestConfig)
             .then(() => {
                 closeModal()
             })
@@ -115,19 +88,21 @@ const EditModal = function ({
         callback()
     }
 
-    function handleEditNext(event) {
+    function handleSaveAndContinue(event) {
         event.preventDefault()
-        const formData = getFormData()
 
         const editUrl = `${url}${editableData[pkField]}/`
+        const requestData = sendJson
+            ? getJsonData(formElement.current, columns)
+            : getFormData(formElement.current, columns)
 
-        const config = {
+        const requestConfig = {
             headers: {
-                'content-type': 'multipart/form-data',
+                'content-type': getContentType(sendJson),
             },
         }
         apiClient
-            .patch(editUrl, formData, config)
+            .patch(editUrl, requestData, requestConfig)
             .then(() => {
                 setIndex(idx => idx + 1)
             })
@@ -135,29 +110,6 @@ const EditModal = function ({
 
         callback()
     }
-
-    const handleCmdEnterPress = event => {
-        if (modalOpen) {
-            if (event.key === 'Enter' && event.ctrlKey) {
-                event.preventDefault()
-                saveAndContinueButton.current.click()
-            } else if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault()
-                submitButton.current.click()
-            } else if (event.key === 'Escape') {
-                event.preventDefault()
-                cancelButton.current.click()
-            }
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener('keydown', handleCmdEnterPress)
-
-        return () => {
-            document.removeEventListener('keydown', handleCmdEnterPress)
-        }
-    })
 
     const handleNextRow = event => {
         event.preventDefault()
@@ -207,10 +159,36 @@ const EditModal = function ({
                             }
                         })}
                         <div style={style.submitBlock}>
-                            <button type="submit" style={style.submitBlockButton}>
-                                Submit
+                            <button
+                                disabled={!(index > 0)}
+                                onClick={handlePreviousRow}
+                                style={style.submitBlockButton}
+                            >
+                                <FontAwesomeIcon icon={faCaretLeft} />
                             </button>
-                            <button onClick={closeModal} style={style.submitBlockButton}>
+                            <button
+                                disabled={!(index < pageData.length - 1)}
+                                onClick={handleNextRow}
+                                style={style.submitBlockButton}
+                            >
+                                <FontAwesomeIcon icon={faCaretRight} />
+                            </button>
+                            <button
+                                type="submit"
+                                style={style.submitBlockButton}
+                                disabled={!(index < pageData.length - 1)}
+                                ref={submitButton}
+                            >
+                                Save
+                            </button>
+                            <button ref={saveAndContinueButton} onClick={handleSaveAndContinue}>
+                                Save and continue
+                            </button>
+                            <button
+                                onClick={closeModal}
+                                style={style.submitBlockButton}
+                                ref={cancelButton}
+                            >
                                 close
                             </button>
                         </div>

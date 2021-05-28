@@ -4,8 +4,8 @@
         "module": "es2020",
         "jsx": "react",
         "moduleResolution": "node",
-        "lib": ["dom", "es5", "es6"],
-        "allowSyntheticDefaultImports": true
+        "lib": ["dom", "esnext"],
+        "allowSyntheticDefaultImports": true,
     },
     "include": ["src/**/*"]
 }
