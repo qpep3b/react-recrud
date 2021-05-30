@@ -8,6 +8,8 @@ const api = axios.create({
     baseURL: 'http://localhost:5000',
 })
 
+const history = createBrowserHistory()
+
 function getColumns() {
     return [
         {
@@ -47,9 +49,7 @@ function getColumns() {
 function App() {
     return (
         <CrudApiClientProvider client={api}>
-            <Router history={createBrowserHistory()}>
-                <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
-            </Router>
+            <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
         </CrudApiClientProvider>
     )
 }

@@ -14,10 +14,12 @@
         "axios": "^0.21.1",
         "query-string": "^7.0.0",
         "react-modal": "^3.13.1",
-        "react-router-dom": "^5.2.0",
         "react-table": "^7.0.0-rc.16"
     },
     "devDependencies": {
+        "react-router-dom": "^5.2.0",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0",
         "@babel/cli": "^7.14.3",
         "@babel/core": "^7.14.3",
         "@babel/preset-env": "^7.14.2",
@@ -27,8 +29,6 @@
         "babel-loader": "^8.2.2",
         "babel-plugin-css-modules-transform": "^1.6.2",
         "prettier": "^2.3.0",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
         "rimraf": "^3.0.2",
         "typescript": "^4.3.2"
     },
@@ -38,7 +38,7 @@
         "format": "prettier --write src/**/*",
         "tscheck": "tsc --noEmit",
         "release": "npm run build && npm publish",
-        "debug": "npm run build && npm link --only=production"
+        "debug": "npm run build && npm link"
     },
     "repository": {
         "type": "git",

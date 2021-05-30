@@ -4,8 +4,6 @@ import { faSort } from '@fortawesome/free-solid-svg-icons/faSort'
 import { faSortUp } from '@fortawesome/free-solid-svg-icons/faSortUp'
 import { faSortDown } from '@fortawesome/free-solid-svg-icons/faSortDown'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useHistory } from 'react-router-dom'
-import { useParsedLocation } from '../hooks/urlHooks'
 
 import { Column } from './types'
 
@@ -16,8 +14,6 @@ interface TableProps {
     add: boolean
     edit: boolean
     remove: boolean
-    globalSearch: boolean
-    filter: boolean
     url: string
 
     fetchData(paginationParams): void
@@ -42,8 +38,6 @@ const Table: React.FC<TableProps> = ({
     add,
     edit,
     remove,
-    filter,
-    globalSearch,
     defaultSortField,
     defaultSortOrder,
     pkField,
@@ -60,9 +54,6 @@ const Table: React.FC<TableProps> = ({
     fetchData,
     hiddenColumns = [],
 }) => {
-    const { path, urlParams } = useParsedLocation()
-    const history = useHistory()
-
     const {
         getTableProps,
         getTableBodyProps,
@@ -83,11 +74,7 @@ const Table: React.FC<TableProps> = ({
                         desc: defaultSortOrder == 'desc',
                     },
                 ],
-                pageSize: urlParams.pageSize
-                    ? parseInt(urlParams.pageSize)
-                    : localStorage.getItem('tablePageSize')
-                    ? localStorage.getItem('tablePageSize')
-                    : 20,
+                pageSize: 20,
             },
             manualPagination: true,
             manualSortBy: true,
@@ -96,9 +83,7 @@ const Table: React.FC<TableProps> = ({
         usePagination,
     )
 
-    const [pageIndex, setPageIndex] = useState(urlParams.page ? parseInt(urlParams.page) - 1 : 0)
-    const [searchQuery, setSearchQuery] = useState('')
-    const [filters, setFilters] = useState({})
+    const [pageIndex, setPageIndex] = useState<number>(0)
     const [selectedIndex, setSelectedIndex] = useState()
 
     useEffect(() => {
@@ -109,16 +94,9 @@ const Table: React.FC<TableProps> = ({
             orderBy = sortBy[0].id
         }
 
-        fetchData({ pageIndex, pageSize, orderBy, order, searchQuery, filters })
+        fetchData({ pageIndex, pageSize, orderBy, order })
         setSelectedIndex(null)
-    }, [fetchData, pageIndex, pageSize, sortBy, filters])
-
-    useEffect(() => {
-        history.push({
-            pathname: path,
-            search: `?page=${pageIndex + 1}&pageSize=${pageSize}`,
-        })
-    }, [pageIndex, pageSize])
+    }, [fetchData, pageIndex, pageSize, sortBy])
 
     const onUpdate = useCallback(() => {
         let order = defaultSortOrder
@@ -128,14 +106,9 @@ const Table: React.FC<TableProps> = ({
             orderBy = sortBy[0].id
         }
 
-        fetchData({ pageIndex, pageSize, orderBy, order, searchQuery, filters })
+        fetchData({ pageIndex, pageSize, orderBy, order })
         setSelectedIndex(null)
-    }, [pageIndex, pageSize, sortBy, searchQuery, filters])
-
-    const filtersCallback = newFilters => {
-        setPageIndex(0)
-        setFilters(newFilters)
-    }
+    }, [pageIndex, pageSize, sortBy])
 
     const tableProps = () => {
         const defaultTableProps = {

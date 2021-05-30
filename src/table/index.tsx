@@ -14,8 +14,6 @@ interface TableProps {
     add?: boolean // If you want table to be addable
     edit?: boolean // If you want table to be editable
     remove?: boolean // If you want table to be removable
-    globalSearch?: boolean // If you want to enable searching through table
-    filter?: boolean // If you want to enable filtering
     defaultSortField?: string
     defaultSortOrder?: string
     pkField?: string
@@ -34,8 +32,6 @@ const CrudTable: React.FC<TableProps> = ({
     add = true,
     edit = true,
     remove = true,
-    globalSearch = false,
-    filter = false,
     defaultSortField = 'id',
     defaultSortOrder = 'desc',
     pkField = 'id',
@@ -75,7 +71,7 @@ const CrudTable: React.FC<TableProps> = ({
     const [pageCount, setPageCount] = React.useState(0)
 
     const fetchData = React.useCallback(
-        ({ pageSize, pageIndex, orderBy, order, searchQuery, filters }) => {
+        ({ pageSize, pageIndex, orderBy, order }) => {
             setLoading(true)
             apiClient
                 .get<any, { data: PaginatedResponse<any[]> }>(url, {
@@ -84,8 +80,6 @@ const CrudTable: React.FC<TableProps> = ({
                         page_size: pageSize,
                         order_by: orderBy,
                         order,
-                        search_query: searchQuery ? searchQuery : null,
-                        filters: Object.keys(filters).length > 0 ? JSON.stringify(filters) : null,
                     },
                 })
                 .then(({ data }) => {
@@ -105,8 +99,6 @@ const CrudTable: React.FC<TableProps> = ({
                 add={add}
                 edit={edit}
                 remove={remove}
-                globalSearch={globalSearch}
-                filter={filter}
                 defaultSortField={defaultSortField}
                 defaultSortOrder={defaultSortOrder}
                 extendRowParams={extendRowParams}
