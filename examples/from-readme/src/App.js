@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React from 'react'
-import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 import { CrudTable, CrudApiClientProvider } from 'react-recrud'
 
 const api = axios.create({
@@ -46,7 +47,7 @@ function getColumns() {
 function App() {
     return (
         <CrudApiClientProvider client={api}>
-            <Router history={browserHistory}>
+            <Router history={createBrowserHistory()}>
                 <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
             </Router>
         </CrudApiClientProvider>

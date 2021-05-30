@@ -38,7 +38,7 @@
         "format": "prettier --write src/**/*",
         "tscheck": "tsc --noEmit",
         "release": "npm run build && npm publish",
-        "debug": "npm run build && npm link"
+        "debug": "npm run build && npm link --only=production"
     },
     "repository": {
         "type": "git",

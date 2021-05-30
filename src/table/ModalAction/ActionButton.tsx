@@ -12,7 +12,18 @@ const ActionButton: React.FC<ActionButtonProps> = ({ onClick, disabled = false, 
     }
 
     return (
-        <button onClick={handleClick} disabled={disabled}>
+        <button
+            onClick={handleClick}
+            disabled={disabled}
+            style={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                borderColor: 'transparent',
+                cursor: 'pointer',
+                padding: '5px 5px',
+                textAlign: 'center',
+            }}
+        >
             {children}
         </button>
     )

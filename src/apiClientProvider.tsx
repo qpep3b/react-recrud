@@ -13,7 +13,7 @@ export const CrudApiClientProvider: React.FC<ApiClientContextProps> = ({ client,
 }
 
 export const useCrudApiClient = (): AxiosInstance => {
-    const apiClient = useContext(ApiClientContext)
+    const apiClient = useContext<AxiosInstance>(ApiClientContext)
 
     if (!apiClient) {
         throw new Error('No api client provided!')

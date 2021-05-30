@@ -11,7 +11,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "react-recrud": "0.0.3"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-recrud": "0.0.4"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.2",
