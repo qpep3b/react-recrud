@@ -27,8 +27,8 @@ Then you can use this package in your frontend
 ```js
 import axios from 'axios'
 import React from 'react'
-import { BrowserRouter as Router, browserHistory } from 'react-router-dom'
-import {CrudTable, CrudApiClientProvider} from 'react-recrud'
+import { CrudTable, CrudApiClientProvider } from 'react-recrud'
+import 'react-recrud/lib/style.css' // Insert this line to apply default styles
 
 const api = axios.create({
     baseURL: 'http://localhost:5000',
@@ -53,7 +53,7 @@ function getColumns() {
             editType: 'textarea',
         },
         {
-            Header: 'type',
+            Header: 'Type',
             accessor: 'type',
             editType: 'select',
             editValues: [
@@ -73,9 +73,7 @@ function getColumns() {
 function App() {
     return (
         <CrudApiClientProvider client={api}>
-            <Router history={browserHistory}>
-                <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
-            </Router>
+            <CrudTable url="items/" columns={getColumns()} />
         </CrudApiClientProvider>
     )
 }

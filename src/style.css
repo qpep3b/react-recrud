@@ -1,0 +1,99 @@
+:global(.react-recrud-table-header) {
+    background-color: #eee;
+}
+
+:global(.react-recrud-table-header th) {
+    background-color: #eee;
+    cursor: pointer;
+}
+
+:global(.react-recrud-table-cell) {
+    border: 1px solid gray;
+    padding: 10px;
+}
+
+:global(.react-recrud-table-action-button) {
+    background-color: transparent;
+    border-radius: 2px;
+    box-shadow: none;
+    border-color: transparent;
+    padding: 5px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+:global(.react-recrud-table-action-button:enabled) {
+    color: rgba(0, 0, 0, 0.85);
+    cursor: pointer;
+}
+
+:global(.react-recrud-table-action-button:hover:enabled) {
+    background-color: #ddd;
+}
+
+:global(.react-recrud-table-pagination) {
+    align-items: center;
+}
+
+:global(.react-recrud-modal-header) {
+    background-color: blue;
+    color: white;
+    padding: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+:global(.react-recrud-modal-content) {
+    padding: 10px 20px;
+}
+
+:global(.react-recrud-modal-controls-block) {
+    float: right;
+    padding: 10px;
+}
+
+:global(.react-recrud-modal-control-button) {
+    background-color: transparent;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+    color: rgba(0, 0, 0, 0.85);
+    border-radius: 2px;
+    padding: 5px 13px;
+    text-align: center;
+    font-size: 1rem;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+:global(.react-recrud-modal-control-button:hover) {
+    background-color: #ddd;
+}
+
+:global(.react-recrud-form-item) {
+    width: 100%;
+    padding: 3px 5px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-size: .9rem;
+}
+
+:global(.react-recrud-modal-error-message) {
+    background-color: pink;
+    color: red;
+}
+
+:global(.react-recrud-input-element) {
+    border: 2px solid #ddd;
+}
+
+:global(.react-recrud-textarea-element) {
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+:global(.react-recrud-select-element) {
+    padding: 5px;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 2px;
+}

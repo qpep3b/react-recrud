@@ -6,7 +6,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
 import { useCrudApiClient } from '../../apiClientProvider'
 
-import style from './styles'
 import { Column } from '../types'
 import { getContentType, getFormData, getJsonData } from './utils/contentTypes'
 
@@ -26,7 +25,7 @@ const AddModal: React.FC<AddModalProps> = ({
     const apiClient = useCrudApiClient()
     const [error, setErrorText] = useState<string>('')
     const [modalOpen, setIsOpen] = useState<boolean>(false)
-    const [openCounter, setOpenCounter] = useState<number>(0)
+    const [openCounter, setOpenCounter] = useState<number>(0) // Don't remember reason for using it
 
     function buildErrorText(error) {
         let errMsg = ''
@@ -71,22 +70,19 @@ const AddModal: React.FC<AddModalProps> = ({
             <ActionButton onClick={() => setIsOpen(true)}>
                 <FontAwesomeIcon icon={faPlus} />
             </ActionButton>
-            <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
-                {error ? <div style={style.error}>{error}</div> : null}
+            <BaseModal isOpen={modalOpen} onRequestClose={closeModal} title="Add row">
+                {error ? <div className="react-recrud-modal-error-message">{error}</div> : null}
                 <form onSubmit={handleAdd}>
                     {columns.map((column, i) => {
-                        if (!column.hidden) {
-                            return <ModalField key={i} column={column} />
-                        } else {
-                            return ''
-                        }
+                        if (column.hidden) return null
+                        return <ModalField key={i} column={column} />
                     })}
-                    <div style={style.submitBlock}>
-                        <button type="submit" style={style.submitBlockButton}>
+                    <div className="react-recrud-modal-controls-block">
+                        <button type="submit" className="react-recrud-modal-control-button">
                             Submit
                         </button>
-                        <button onClick={closeModal} style={style.submitBlockButton}>
-                            close
+                        <button onClick={closeModal} className="react-recrud-modal-control-button">
+                            Close
                         </button>
                     </div>
                 </form>

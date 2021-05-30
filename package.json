@@ -33,12 +33,13 @@
         "typescript": "^4.3.2"
     },
     "scripts": {
-        "build": "rimraf lib/ && babel --extensions .ts,.tsx --ignore ./src/**/tests/**/* ./src --out-dir lib",
+        "build:source": "rimraf lib/ && babel --extensions .ts,.tsx --ignore ./src/**/tests/**/* ./src --out-dir lib",
+        "build:css": "cp ./src/style.css ./lib",
         "test": "echo \"Error: no test specified\" && exit 1",
         "format": "prettier --write src/**/*",
         "tscheck": "tsc --noEmit",
         "release": "npm run build && npm publish",
-        "debug": "npm run build && npm link"
+        "debug": "npm run build:source && npm run build:css && npm link"
     },
     "repository": {
         "type": "git",

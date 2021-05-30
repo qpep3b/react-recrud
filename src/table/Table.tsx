@@ -4,6 +4,7 @@ import { faSort } from '@fortawesome/free-solid-svg-icons/faSort'
 import { faSortUp } from '@fortawesome/free-solid-svg-icons/faSortUp'
 import { faSortDown } from '@fortawesome/free-solid-svg-icons/faSortDown'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import ActionButton from './ModalAction/ActionButton'
 
 import { Column } from './types'
 
@@ -136,14 +137,7 @@ const Table: React.FC<TableProps> = ({
     }
 
     const getHeaderCellPropsByColumn = (column: RTColumn, ...args) => {
-        const defaultHeaderCellProps = {
-            style: {
-                border: '1px solid gray',
-                padding: '10px',
-                backgroundColor: '#eee',
-                cursor: 'pointer',
-            },
-        }
+        const defaultHeaderCellProps = { className: 'react-recrud-table-cell' }
 
         return {
             ...column.getHeaderProps(column.getSortByToggleProps()),
@@ -152,12 +146,7 @@ const Table: React.FC<TableProps> = ({
     }
 
     const getCellPropsByColumn = (column: RTColumn, ...args) => {
-        const defaultCellProps = {
-            style: {
-                border: '1px solid gray',
-                padding: '10px',
-            },
-        }
+        const defaultCellProps = { className: 'react-recrud-table-cell' }
         if (column.getCellProps) {
             return {
                 ...defaultCellProps,
@@ -225,7 +214,11 @@ const Table: React.FC<TableProps> = ({
                 <table {...tableProps()} className="tbl-content">
                     <thead>
                         {headerGroups.map((headerGroup, i) => (
-                            <tr {...headerGroup.getHeaderGroupProps()} key={i}>
+                            <tr
+                                className="react-recrud-table-header"
+                                {...headerGroup.getHeaderGroupProps()}
+                                key={i}
+                            >
                                 {headerGroup.headers.map((column, i) =>
                                     renderHeaderCell(column, i),
                                 )}
@@ -251,21 +244,15 @@ const Table: React.FC<TableProps> = ({
                     </tbody>
                 </table>
             </div>
-            <div className="pagination row">
-                <div className="col s3">
+            <div id="react-recrud-table-pagination" style={{ marginTop: '10px' }}>
+                <div id="react-recrud-table-pagination-pagesize-control">
                     Show{' '}
                     <select
-                        style={{
-                            display: 'inline-block',
-                            width: 'auto',
-                            backgroundColor: '#fff',
-                            margin: '0 5px',
-                        }}
+                        className="react-recrud-select-element"
                         value={pageSize}
                         onChange={event => {
                             setPageIndex(0)
                             setPageSize(Number(event.target.value))
-                            localStorage.setItem('tablePageSize', event.target.value)
                         }}
                     >
                         {[2, 10, 20, 30, 40, 50].map(pageSize => (
@@ -273,37 +260,37 @@ const Table: React.FC<TableProps> = ({
                                 {pageSize}
                             </option>
                         ))}
-                    </select>
+                    </select>{' '}
                     elements
                 </div>
-                <div className="col s9">
-                    <button onClick={() => setPageIndex(0)} disabled={!(pageIndex > 0)}>
+                <div id="react-recrud-table-pagination-page-control">
+                    <ActionButton onClick={() => setPageIndex(0)} disabled={!(pageIndex > 0)}>
                         {'<<'}
-                    </button>{' '}
-                    <button
+                    </ActionButton>{' '}
+                    <ActionButton
                         onClick={() => setPageIndex(idx => idx - 1)}
                         disabled={!(pageIndex > 0)}
                     >
                         {'<'}
-                    </button>{' '}
+                    </ActionButton>{' '}
                     <span>
                         Page{' '}
                         <strong>
                             {pageIndex + 1} of {pageCount}
                         </strong>{' '}
                     </span>
-                    <button
+                    <ActionButton
                         onClick={() => setPageIndex(idx => idx + 1)}
                         disabled={!(pageIndex < pageCount - 1)}
                     >
                         {'>'}
-                    </button>{' '}
-                    <button
+                    </ActionButton>{' '}
+                    <ActionButton
                         onClick={() => setPageIndex(pageCount - 1)}
                         disabled={!(pageIndex < pageCount - 1)}
                     >
                         {'>>'}
-                    </button>{' '}
+                    </ActionButton>{' '}
                 </div>
             </div>
         </>

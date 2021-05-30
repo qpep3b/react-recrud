@@ -6,9 +6,15 @@ ReactModal.setAppElement('body')
 interface BaseModalProps {
     isOpen: boolean
     onRequestClose(): void
+    title?: string
 }
 
-const BaseModal: React.FC<BaseModalProps> = ({ isOpen, onRequestClose, children }) => {
+const BaseModal: React.FC<BaseModalProps> = ({
+    isOpen,
+    onRequestClose,
+    title = null,
+    children,
+}) => {
     return (
         <ReactModal
             isOpen={isOpen}
@@ -29,16 +35,30 @@ const BaseModal: React.FC<BaseModalProps> = ({ isOpen, onRequestClose, children 
                     fontSize: '14px',
                     margin: '0 auto',
                     maxWidth: 'calc(100vw - 32px)',
-                    padding: '20px 10px',
                     position: 'relative',
+                    padding: '0',
                     top: '100px',
-                    width: 'auto',
+                    width: '520px',
+                    border: '1px solid rgba(80, 80, 80, 0.75)',
                 },
             }}
+            onAfterOpen={() => (document.body.style.overflow = 'hidden')}
+            onAfterClose={() => (document.body.style.overflow = 'unset')}
         >
-            {children}
+            <ModalHeader title={title} />
+            <div className="react-recrud-modal-content">{children}</div>
         </ReactModal>
     )
+}
+
+interface ModalHeaderProps {
+    title?: string | null
+}
+
+const ModalHeader: React.FC<ModalHeaderProps> = ({ title }) => {
+    if (title === null) return null
+
+    return <div className="react-recrud-modal-header">{title}</div>
 }
 
 export default BaseModal

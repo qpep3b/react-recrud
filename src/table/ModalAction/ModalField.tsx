@@ -1,28 +1,28 @@
 import React from 'react'
 import { Column } from '../types'
 
-interface ModalFieldProps {
-    column: Column
-    value?: any
-}
-
-const ModalField: React.FC<ModalFieldProps> = ({ column, value = null }) => {
-    var field
-
+const getFieldByColumn = (column: Column, value: any): JSX.Element => {
     switch (column.editType) {
         case 'textarea':
-            field = <textarea name={column.accessor} id={column.accessor} defaultValue={value} />
-            break
+            return (
+                <textarea
+                    className="react-recrud-textarea-element react-recrud-form-item"
+                    name={column.accessor}
+                    id={column.accessor}
+                    defaultValue={value}
+                    rows={5}
+                />
+            )
         case 'select':
             if (!column.editValues) {
                 alert('You have select field with no options!')
             }
-            field = (
+            return (
                 <select
+                    className="react-recrud-select-element react-recrud-form-item"
                     name={column.accessor}
                     id={column.accessor}
                     defaultValue={value}
-                    className="browser-default"
                 >
                     {column.editValues.map((option, i) => {
                         return (
@@ -33,16 +33,28 @@ const ModalField: React.FC<ModalFieldProps> = ({ column, value = null }) => {
                     })}
                 </select>
             )
-            break
         default:
-            field = <input name={column.accessor} id={column.accessor} defaultValue={value} />
-            break
+            return (
+                <input
+                    className="react-recrud-input-element react-recrud-form-item"
+                    name={column.accessor}
+                    id={column.accessor}
+                    defaultValue={value}
+                />
+            )
     }
+}
 
+interface ModalFieldProps {
+    column: Column
+    value?: any
+}
+
+const ModalField: React.FC<ModalFieldProps> = ({ column, value = null }) => {
     return (
         <div>
             <label htmlFor={column.accessor}>{column.Header}</label>
-            {field}
+            {getFieldByColumn(column, value)}
         </div>
     )
 }

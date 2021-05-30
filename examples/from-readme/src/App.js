@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { CrudTable, CrudApiClientProvider } from 'react-recrud'
+import 'react-recrud/lib/style.css' // Insert this line to apply default styles
 
 const api = axios.create({
     baseURL: 'http://localhost:5000',
@@ -25,7 +26,7 @@ function getColumns() {
             editType: 'textarea',
         },
         {
-            Header: 'type',
+            Header: 'Type',
             accessor: 'type',
             editType: 'select',
             editValues: [
@@ -45,7 +46,7 @@ function getColumns() {
 function App() {
     return (
         <CrudApiClientProvider client={api}>
-            <CrudTable url="items/" columns={getColumns()} hiddenColumns={['comment']} />
+            <CrudTable url="items/" columns={getColumns()} />
         </CrudApiClientProvider>
     )
 }

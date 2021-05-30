@@ -9,6 +9,7 @@ const data = Array.from(Array(500).keys()).map(i => {
     return {
         id: i + 1,
         url: `site-${i + 1}.com`,
+        comment: `comment for domain ${i + 1}`,
         type: 'type1',
     }
 })
@@ -34,7 +35,7 @@ const paginatedResponse = (page, pageSize, data) => {
     return {
         params: {
             page: page,
-            pages: data.length / pageSize,
+            pages: Math.ceil(data.length / pageSize),
         },
         results: data.slice((page - 1) * pageSize, page * pageSize),
     }

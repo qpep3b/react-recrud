@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
 import { useCrudApiClient } from '../../apiClientProvider'
 
-import style from './styles'
 import { Column } from '../types'
 import { getContentType, getFormData, getJsonData } from './utils/contentTypes'
 
@@ -41,12 +40,6 @@ const EditModal: React.FC<EditModalProps> = ({
         index == null ? {} : pageData[index].original,
     )
 
-    // Refs for simulating triggering jsx elements
-    const formElement = useRef<HTMLFormElement>(null)
-    const submitButton = useRef<HTMLButtonElement>(null)
-    const saveAndContinueButton = useRef<HTMLButtonElement>(null)
-    const cancelButton = useRef<HTMLButtonElement>(null)
-
     useEffect(() => {
         if (!(index == null)) {
             setEditableData(pageData[index].original)
@@ -68,13 +61,13 @@ const EditModal: React.FC<EditModalProps> = ({
         return errMsg
     }
 
-    function handleEdit(event) {
+    function handleEdit(event: React.FormEvent) {
         event.preventDefault()
 
         const editUrl = `${url}${editableData[pkField]}/`
         const requestData = sendJson
-            ? getJsonData(formElement.current, columns)
-            : getFormData(formElement.current, columns)
+            ? getJsonData(event.target as HTMLFormElement, columns)
+            : getFormData(event.target as HTMLFormElement, columns)
 
         const requestConfig = {
             headers: {
@@ -96,8 +89,8 @@ const EditModal: React.FC<EditModalProps> = ({
 
         const editUrl = `${url}${editableData[pkField]}/`
         const requestData = sendJson
-            ? getJsonData(formElement.current, columns)
-            : getFormData(formElement.current, columns)
+            ? getJsonData(event.target as HTMLFormElement, columns)
+            : getFormData(event.target as HTMLFormElement, columns)
 
         const requestConfig = {
             headers: {
@@ -132,20 +125,14 @@ const EditModal: React.FC<EditModalProps> = ({
                 <FontAwesomeIcon icon={faEdit} />
             </ActionButton>
             {index == null ? null : (
-                <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
-                    <form onSubmit={handleEdit} ref={formElement}>
-                        {error ? <div style={style.error}>{error}</div> : null}
+                <BaseModal isOpen={modalOpen} onRequestClose={closeModal} title="Edit Row">
+                    <form onSubmit={handleEdit}>
+                        {error ? (
+                            <div className="react-recrud-modal-error-message">{error}</div>
+                        ) : null}
                         {columns.map((column, i) => {
                             const fieldKey = `edit:${editableData[pkField]}:${i}`
-                            if (!column.hidden) {
-                                return (
-                                    <ModalField
-                                        key={fieldKey}
-                                        column={column}
-                                        value={editableData[column.accessor]}
-                                    />
-                                )
-                            } else {
+                            if (column.hidden)
                                 return (
                                     <input
                                         key={fieldKey}
@@ -154,40 +141,48 @@ const EditModal: React.FC<EditModalProps> = ({
                                         id={column.accessor}
                                     />
                                 )
-                            }
+
+                            return (
+                                <ModalField
+                                    key={fieldKey}
+                                    column={column}
+                                    value={editableData[column.accessor]}
+                                />
+                            )
                         })}
-                        <div style={style.submitBlock}>
+                        <div className="react-recrud-modal-controls-block">
                             <button
                                 disabled={!(index > 0)}
                                 onClick={handlePreviousRow}
-                                style={style.submitBlockButton}
+                                className="react-recrud-modal-control-button"
                             >
                                 <FontAwesomeIcon icon={faCaretLeft} />
                             </button>
                             <button
                                 disabled={!(index < pageData.length - 1)}
                                 onClick={handleNextRow}
-                                style={style.submitBlockButton}
+                                className="react-recrud-modal-control-button"
                             >
                                 <FontAwesomeIcon icon={faCaretRight} />
                             </button>
                             <button
                                 type="submit"
-                                style={style.submitBlockButton}
+                                className="react-recrud-modal-control-button"
                                 disabled={!(index < pageData.length - 1)}
-                                ref={submitButton}
                             >
                                 Save
                             </button>
-                            <button ref={saveAndContinueButton} onClick={handleSaveAndContinue}>
+                            <button
+                                onClick={handleSaveAndContinue}
+                                className="react-recrud-modal-control-button"
+                            >
                                 Save and continue
                             </button>
                             <button
                                 onClick={closeModal}
-                                style={style.submitBlockButton}
-                                ref={cancelButton}
+                                className="react-recrud-modal-control-button"
                             >
-                                close
+                                Close
                             </button>
                         </div>
                     </form>

@@ -5,8 +5,6 @@ import BaseModal from './BaseModal'
 import ActionButton from './ActionButton'
 import { useCrudApiClient } from '../../apiClientProvider'
 
-import style from './styles'
-
 const DeleteModal = ({ pageData = [], url = '', pkField = 'id', index, callback }) => {
     const apiClient = useCrudApiClient()
     const [modalOpen, setIsOpen] = useState<boolean>(false)
@@ -37,16 +35,19 @@ const DeleteModal = ({ pageData = [], url = '', pkField = 'id', index, callback 
                 <FontAwesomeIcon icon={faTrashAlt} />
             </ActionButton>
             {index == null ? null : (
-                <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
-                    {error ? <div style={style.error}>{error}</div> : null}
+                <BaseModal isOpen={modalOpen} onRequestClose={closeModal} title="Delete Row">
+                    {error ? <div className="react-recrud-modal-error-message">{error}</div> : null}
                     <form id="formDelete" onSubmit={handleDelete}>
                         <div>Delete selected entry?</div>
-                        <div style={style.submitBlock}>
-                            <button type="submit" style={style.submitBlockButton}>
-                                Submit
+                        <div className="react-recrud-modal-controls-block">
+                            <button type="submit" className="react-recrud-modal-control-button">
+                                Yes
                             </button>
-                            <button onClick={closeModal} style={style.submitBlockButton}>
-                                close
+                            <button
+                                onClick={closeModal}
+                                className="react-recrud-modal-control-button"
+                            >
+                                No
                             </button>
                         </div>
                     </form>
