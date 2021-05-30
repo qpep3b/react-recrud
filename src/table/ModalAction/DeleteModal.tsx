@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import BaseModal from './BaseModal'
+import ActionButton from './ActionButton'
 import { useCrudApiClient } from '../../apiClientProvider'
 
 import style from './styles'
@@ -32,15 +33,9 @@ const DeleteModal = ({ pageData = [], url = '', pkField = 'id', index, callback 
 
     return (
         <>
-            <button
-                disabled={index == null}
-                onClick={e => {
-                    e.preventDefault()
-                    setIsOpen(true)
-                }}
-            >
+            <ActionButton disabled={index == null} onClick={() => setIsOpen(true)}>
                 <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
+            </ActionButton>
             {index == null ? null : (
                 <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
                     {error ? <div style={style.error}>{error}</div> : null}

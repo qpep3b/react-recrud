@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import BaseModal from './BaseModal'
+import ActionButton from './ActionButton'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
@@ -67,15 +68,9 @@ const AddModal: React.FC<AddModalProps> = ({
 
     return (
         <>
-            <button
-                className="btn-flat"
-                onClick={e => {
-                    e.preventDefault()
-                    setIsOpen(true)
-                }}
-            >
+            <ActionButton onClick={() => setIsOpen(true)}>
                 <FontAwesomeIcon icon={faPlus} />
-            </button>
+            </ActionButton>
             <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
                 {error ? <div style={style.error}>{error}</div> : null}
                 <form onSubmit={handleAdd}>

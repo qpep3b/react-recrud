@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Row } from 'react-table'
+import ActionButton from './ActionButton'
 import BaseModal from './BaseModal'
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons/faCaretLeft'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons/faCaretRight'
@@ -127,15 +128,9 @@ const EditModal: React.FC<EditModalProps> = ({
 
     return (
         <>
-            <button
-                disabled={index == null}
-                onClick={e => {
-                    e.preventDefault()
-                    setIsOpen(true)
-                }}
-            >
+            <ActionButton disabled={index == null} onClick={() => setIsOpen(true)}>
                 <FontAwesomeIcon icon={faEdit} />
-            </button>
+            </ActionButton>
             {index == null ? null : (
                 <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
                     <form onSubmit={handleEdit} ref={formElement}>
