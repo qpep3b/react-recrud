@@ -98,7 +98,7 @@ const CrudTable: React.FC<TableProps> = ({
     )
 
     return (
-        <div>
+        <div id="recrud-content-wrapper">
             <Table
                 columns={columns}
                 url={url}

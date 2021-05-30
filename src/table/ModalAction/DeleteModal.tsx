@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import Modal from 'react-modal'
+import BaseModal from './BaseModal'
 import { useCrudApiClient } from '../../apiClientProvider'
 
 import style from './styles'
@@ -42,7 +42,7 @@ const DeleteModal = ({ pageData = [], url = '', pkField = 'id', index, callback 
                 <FontAwesomeIcon icon={faTrashAlt} />
             </button>
             {index == null ? null : (
-                <Modal isOpen={modalOpen} onRequestClose={closeModal} style={style.modal}>
+                <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
                     {error ? <div style={style.error}>{error}</div> : null}
                     <form id="formDelete" onSubmit={handleDelete}>
                         <div>Delete selected entry?</div>
@@ -55,7 +55,7 @@ const DeleteModal = ({ pageData = [], url = '', pkField = 'id', index, callback 
                             </button>
                         </div>
                     </form>
-                </Modal>
+                </BaseModal>
             )}
         </>
     )

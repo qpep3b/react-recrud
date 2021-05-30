@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Modal from 'react-modal'
+import BaseModal from './BaseModal'
 import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ModalField from './ModalField'
@@ -8,8 +8,6 @@ import { useCrudApiClient } from '../../apiClientProvider'
 import style from './styles'
 import { Column } from '../types'
 import { getContentType, getFormData, getJsonData } from './utils/contentTypes'
-
-Modal.setAppElement('#root')
 
 interface AddModalProps {
     columns: Column[]
@@ -78,7 +76,7 @@ const AddModal: React.FC<AddModalProps> = ({
             >
                 <FontAwesomeIcon icon={faPlus} />
             </button>
-            <Modal style={style.modal} isOpen={modalOpen} onRequestClose={closeModal}>
+            <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
                 {error ? <div style={style.error}>{error}</div> : null}
                 <form onSubmit={handleAdd}>
                     {columns.map((column, i) => {
@@ -97,7 +95,7 @@ const AddModal: React.FC<AddModalProps> = ({
                         </button>
                     </div>
                 </form>
-            </Modal>
+            </BaseModal>
         </>
     )
 }

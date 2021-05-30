@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Row } from 'react-table'
-import Modal from 'react-modal'
+import BaseModal from './BaseModal'
 import { faCaretLeft } from '@fortawesome/free-solid-svg-icons/faCaretLeft'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons/faCaretRight'
 import { faEdit } from '@fortawesome/free-solid-svg-icons/faEdit'
@@ -137,7 +137,7 @@ const EditModal: React.FC<EditModalProps> = ({
                 <FontAwesomeIcon icon={faEdit} />
             </button>
             {index == null ? null : (
-                <Modal style={style.modal} isOpen={modalOpen} onRequestClose={closeModal}>
+                <BaseModal isOpen={modalOpen} onRequestClose={closeModal}>
                     <form onSubmit={handleEdit} ref={formElement}>
                         {error ? <div style={style.error}>{error}</div> : null}
                         {columns.map((column, i) => {
@@ -196,7 +196,7 @@ const EditModal: React.FC<EditModalProps> = ({
                             </button>
                         </div>
                     </form>
-                </Modal>
+                </BaseModal>
             )}
         </>
     )
