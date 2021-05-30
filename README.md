@@ -82,3 +82,8 @@ export default App
 ```
 
 Such widget will retrieve your data and automatically provide CRUD operations for `/items` viewset
+
+## Contributing
+This package is new and its functionality is not complete. So I'll be glad for any contribution. You may either resolve existing issues or suggest your own ideas - any kind of help will be useful for making this package better.
+
+I will be especially glad if you are good in CSS styling or/and writing UI tests, because I'm not very good at it myself
