@@ -1,14 +1,10 @@
 import axios from 'axios'
 import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
 import { CrudTable, CrudApiClientProvider } from 'react-recrud'
 
 const api = axios.create({
     baseURL: 'http://localhost:5000',
 })
-
-const history = createBrowserHistory()
 
 function getColumns() {
     return [
