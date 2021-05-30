@@ -1,6 +1,6 @@
 {
     "name": "react-recrud",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Table providing CRUD operations with RESTful API based on react-table",
     "main": "lib/index.js",
     "files": [
