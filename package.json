@@ -1,6 +1,6 @@
 {
     "name": "react-recrud",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Table providing CRUD operations with RESTful API based on react-table",
     "main": "lib/index.js",
     "files": [
@@ -50,5 +50,5 @@
     "bugs": {
         "url": "https://github.com/qpep3b/react-recrud/issues"
     },
-    "homepage": "https://github.com/qpep3b/react-recrud"
+    "homepage": "https://qpep3b.github.io/react-recrud/"
 }
