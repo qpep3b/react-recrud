@@ -2,6 +2,7 @@
 layout: default
 title:  "Integrating with your API"
 url: "integrating-with-your-api"
+order: 2
 ---
 Now `react-recrud` package doesn't provide customization for retrieving list of items from your backend.
 

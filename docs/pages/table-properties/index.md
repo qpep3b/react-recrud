@@ -2,6 +2,7 @@
 layout: default
 title:  "Table properties"
 url: table-propeerties
+order: 3
 ---
 | Name | Type | Default | Description |
 | -- | ---- | --- | ------ |

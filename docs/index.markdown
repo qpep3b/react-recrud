@@ -3,6 +3,7 @@
 # To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 title: Welcome
 layout: post
+order: 0
 ---
 [![npm](https://img.shields.io/npm/dt/react-recrud)](https://www.npmjs.com/package/react-recrud)
 [![bundlephobia](https://badgen.net/bundlephobia/minzip/react-recrud@0.0.6)](https://bundlephobia.com/result?p=react-recrud@0.0.6)

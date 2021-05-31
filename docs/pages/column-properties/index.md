@@ -2,6 +2,7 @@
 layout: default
 title:  "Column properties"
 url: column-properties
+order: 4
 ---
 `react-recrud` package is based on [react-table](https://react-table.tanstack.com) so it supports [default column properties](https://react-table.tanstack.com/docs/api/useTable#column-options).
 
