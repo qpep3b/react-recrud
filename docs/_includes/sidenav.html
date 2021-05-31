@@ -1,10 +1,8 @@
 <nav class="bd-links">
-    <div class="bd-to-item">
-        <a class="bd-toc-link" href="{{ site.baseurl }}/">Welcome</a>
-    </div>
-    {% for page in site.pages %}
+    {% assign sorted_pages = site.pages | sort:"order" %}
+    {% for page in sorted_pages %}
         <div class="bd-to-item">
-            <a class="bd-toc-link" href="{{ site.baseurl }}{{ page.url }}/">{{ page.title }}</a>
-        </div>
+            <a class="bd-toc-link" href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a>
+        </div> 
     {% endfor %}
 </nav>

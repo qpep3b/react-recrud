@@ -2,6 +2,7 @@
 layout: default
 title:  "Getting started"
 url: getting-started
+order: 1
 ---
 ## Installation
 To use this package you have to install npm dependency
