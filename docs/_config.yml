@@ -27,9 +27,18 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  qpep3b
 
 # Build settings
-theme: minima
+# theme: minima
+highlighter: rouge
 plugins:
   - jekyll-feed
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "post"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
