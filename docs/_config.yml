@@ -38,7 +38,7 @@ defaults:
       path: ""
       type: "pages"
     values:
-      layout: "post"
+      layout: "default"
 
 # Exclude from processing.
 # The following items will not be processed, by default.
